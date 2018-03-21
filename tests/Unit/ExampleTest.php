@@ -2,7 +2,7 @@
 
 namespace Vendor\Packages\Tests\Unit;
 
-use Vendor\Package\Tests\PackageTestCase;
+use Vendor\Yaroute\Tests\PackageTestCase;
 
 class ExampleTest extends PackageTestCase
 {

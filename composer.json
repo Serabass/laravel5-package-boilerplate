@@ -1,16 +1,17 @@
 {
-    "name": "vendor/package",
+    "name": "serabass/yaroute",
     "description": "",
     "keywords": [],
-    "homepage": "",
+    "homepage": "https://github.com/Serabass/yaroute",
     "authors": [
         {
-            "name": "",
-            "email": ""
+            "name": "Serabass",
+            "email": "serabass565@gmail.com"
         }
     ],
     "require": {
-        "illuminate/support": "5.5.*|5.6.*"
+        "illuminate/support": "5.5.*|5.6.*",
+        "symfony/yaml": "^4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "6.0.*|7.0.*",
@@ -18,18 +19,18 @@
     },
     "autoload": {
        "psr-4": {
-            "Vendor\\Package\\": "src/Package"
+            "Serabass\\Yaroute\\": "src/Yaroute"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Vendor\\Package\\Tests\\": "tests/"
+            "Serabass\\Yaroute\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Vendor\\Package\\ServiceProvider"
+                "Serabass\\Yaroute\\ServiceProvider"
             ]
         }
     },

@@ -1,6 +1,6 @@
 <?php
 
-namespace Vendor\Package\Commands;
+namespace Vendor\Yaroute\Commands;
 
 use Illuminate\Console\Command;
 
@@ -11,7 +11,7 @@ class FooCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'package:foo';
+    protected $signature = 'yaroute:foo';
 
     /**
      * The console command description.

@@ -1,9 +1,9 @@
 <?php 
 
-namespace Vendor\Package;
+namespace Vendor\Yaroute;
 
 use Illuminate\Support\ServiceProvider;
-use Vendor\Package\Commands\FooCommand;
+use Vendor\Yaroute\Commands\FooCommand;
 
 /**
  * A Laravel 5.5 package boilerplate
@@ -20,7 +20,7 @@ class PackageServiceProvider extends ServiceProvider {
      * 
      * @var  string
      */
-    protected $packageName = 'package';
+    protected $packageName = 'yaroute';
 
     /**
      * A list of artisan commands for your package
@@ -28,7 +28,7 @@ class PackageServiceProvider extends ServiceProvider {
      * @var array
      */
     protected $commands = [
-        FooCommand::class,
+        // FooCommand::class,
     ];
 
     /**
@@ -38,38 +38,38 @@ class PackageServiceProvider extends ServiceProvider {
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__.'/../routes/routes.php');
+        // $this->loadRoutesFrom(__DIR__.'/../routes/routes.php');
 
         // Register Views from your package
-        $this->loadViewsFrom(__DIR__.'/../views', $this->packageName);
+        // $this->loadViewsFrom(__DIR__.'/../views', $this->packageName);
 
         // Regiter migrations
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         // Register translations
-        $this->loadTranslationsFrom(__DIR__.'/../lang', $this->packageName);
-        $this->publishes([
-            __DIR__.'/../lang' => resource_path('lang/vendor/'. $this->packageName),
-        ]);
+        // $this->loadTranslationsFrom(__DIR__.'/../lang', $this->packageName);
+        // $this->publishes([
+        //     __DIR__.'/../lang' => resource_path('lang/vendor/'. $this->packageName),
+        // ]);
 
         // Register your asset's publisher
-        $this->publishes([
-            __DIR__.'/../assets' => public_path('vendor/'.$this->packageName),
-        ], 'public');
+        // $this->publishes([
+        //     __DIR__.'/../assets' => public_path('vendor/'.$this->packageName),
+        // ], 'public');
 
         // Publish your seed's publisher
-        $this->publishes([
-            __DIR__.'/../database/seeds/' => base_path('/database/seeds')
-        ], 'seeds');
+        // $this->publishes([
+        //     __DIR__.'/../database/seeds/' => base_path('/database/seeds')
+        // ], 'seeds');
 
         // Publish your config
-        $this->publishes([
-            __DIR__.'/../config/config.php' => config_path($this->packageName.'.php'),
-        ], 'config');
+        // $this->publishes([
+        //     __DIR__.'/../config/config.php' => config_path($this->packageName.'.php'),
+        // ], 'config');
 
-        if ($this->app->runningInConsole()) {
-            $this->commands($this->commands);
-        }
+        // if ($this->app->runningInConsole()) {
+        //     $this->commands($this->commands);
+        // }
     }
 
     /**

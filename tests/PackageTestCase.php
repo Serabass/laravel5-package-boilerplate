@@ -1,8 +1,8 @@
 <?php
 
-namespace Vendor\Package\Tests;
+namespace Vendor\Yaroute\Tests;
 
-use Vendor\Package\PackageServiceProvider;
+use Vendor\Yaroute\PackageServiceProvider;
 use Orchestra\Testbench\TestCase;
 
 abstract class PackageTestCase extends TestCase

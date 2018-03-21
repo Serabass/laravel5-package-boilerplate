@@ -1,0 +1,50 @@
+GET /{path? ~ ^(?!admin).*} as home [guest]: HomeController@index
+
+GET /checkToken2 as checkToken2 [api,guest]: UserController@checkToken2
+
+GET /checkToken3 as checkToken3:
+  controller: UserController
+  action: checkToken3
+  middleware: api,guest
+
+POST /save [auth]: ArticleController@save
+
+PUT /saveAll [auth]: ArticleController@save
+
+^/api [api]:
+  GET /entity: EntityController@list
+  GET /entity/{id ~ \d+}: EntityController@get
+  POST /entity/{id ~ \d+}: EntityController@save
+
+  GET /entity/{id}/getComments:
+    action: EntityController@getComments
+
+  ^/admin:
+    GET /index: AdminController@index
+    GET /entity/{id ~ \d+}: AdminController@entity
+    ^/subroute3:
+      GET /entity/{id ~ \d+}: AdminController@entity
+      GET /data/{alias ~ .+}: AdminController@entity
+
+  ^/admin123/{section ~ \w+}:
+    GET /index: AdminSectionController@index
+
+^/sub [api]:
+  - sub
+
+/api/model/export.{format ~ \w+}: ModelController@export
+
+_mixin1: &ResourceMixin
+  ^/{id}:
+    GET /: $ControllerName@show
+
+    ^/ [auth:api]:
+      POST /: $ControllerName@update
+      DELETE /: $ControllerName@destroy
+
+_mixin2: &CommentableResourceMixin
+  <<: *ResourceMixin
+  GET /comments: $ControllerName@getComments
+
+^/book2:
+  <<: *CommentableResourceMixin
