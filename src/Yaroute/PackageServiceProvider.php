@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 namespace Serabass\Yaroute;
 
 use Illuminate\Support\ServiceProvider;
-use Serabass\Yaroute\Commands\FooCommand;
+use Serabass\Yaroute\Commands\GenerateCommand;
 
 /**
  * A Laravel 5.5 package boilerplate
@@ -13,22 +13,22 @@ use Serabass\Yaroute\Commands\FooCommand;
 class PackageServiceProvider extends ServiceProvider {
 
     /**
-     * This will be used to register config & view in 
+     * This will be used to register config & view in
      * your package namespace.
      *
      * --> Replace with your package name <--
-     * 
+     *
      * @var  string
      */
     protected $packageName = 'yaroute';
 
     /**
      * A list of artisan commands for your package
-     * 
+     *
      * @var array
      */
     protected $commands = [
-        // FooCommand::class,
+        GenerateCommand::class,
     ];
 
     /**
