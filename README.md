@@ -54,8 +54,8 @@ Simple group config:
       GET /entity/{id ~ \d+}: AdminController@entity
       GET /data/{alias ~ .+}: AdminController@entity
 ```
-    
-TODO:
-1. Создать команду artisan yaroute:make api/web, которая сгеренирует yaml-документ.
-    В идеале это будет генератор документов на основании текущих роутов.
-...
+
+Also you can generate new YAML document with `$ php artisan yaroute:generate`.
+It will be printed to stdout and you can pipe it to needed file, e.g.:
+
+`$ php artisan yaroute:generate > routes/api.yaml`
