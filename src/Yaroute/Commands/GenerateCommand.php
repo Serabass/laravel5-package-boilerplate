@@ -22,16 +22,6 @@ class GenerateCommand extends Command
     protected $description = 'Generates YAML config file in routes directory based on registered routes';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
