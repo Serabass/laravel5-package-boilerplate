@@ -2,7 +2,7 @@
 
 namespace Serabass\Yaroute\Tests;
 
-use Serabass\Yaroute\PackageServiceProvider;
+use Serabass\Yaroute\YarouteServiceProvider;
 use Orchestra\Testbench\TestCase;
 
 abstract class PackageTestCase extends TestCase
@@ -10,6 +10,6 @@ abstract class PackageTestCase extends TestCase
 
     protected function getPackageProviders($app)
     {
-        return [PackageServiceProvider::class];
+        return [YarouteServiceProvider::class];
     }
 }

@@ -10,7 +10,7 @@ use Serabass\Yaroute\Commands\GenerateCommand;
  *
  * @author: Rémi Collin (remi@code16.fr)
  */
-class PackageServiceProvider extends ServiceProvider {
+class YarouteServiceProvider extends ServiceProvider {
 
     /**
      * This will be used to register config & view in
