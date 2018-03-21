@@ -13,6 +13,8 @@ The format of group must look like:
   <METHOD> /<PATH> [as <NAME>]: <ACTION>
 ```
 
+Groups can be nested
+
 # Examples
 
 ```yaml
