@@ -67,9 +67,9 @@ class PackageServiceProvider extends ServiceProvider {
         //     __DIR__.'/../config/config.php' => config_path($this->packageName.'.php'),
         // ], 'config');
 
-        // if ($this->app->runningInConsole()) {
-        //     $this->commands($this->commands);
-        // }
+        if ($this->app->runningInConsole()) {
+            $this->commands($this->commands);
+        }
     }
 
     /**
