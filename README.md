@@ -3,6 +3,9 @@
 # Installation
 ` $ composer require serabass/yaroute `
 
+# Docs
+The format must look like `<METHOD> /<PATH> [as <NAME>] [uses <MIDDLEWARE>]: <ACTION>`
+
 # Examples
 
 ```yaml
