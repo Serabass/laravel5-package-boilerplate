@@ -4,7 +4,14 @@
 ` $ composer require serabass/yaroute `
 
 # Docs
-The format must look like `<METHOD> /<PATH> [as <NAME>] [uses <MIDDLEWARE>]: <ACTION>`
+The format of simple route must look like `<METHOD> /<PATH> [as <NAME>] [uses <MIDDLEWARE>]: <ACTION>`
+
+The format of group must look like:
+
+```yaml
+^<PREFIX> [uses <MIDDLEWARE>]:
+  <METHOD> /<PATH> [as <NAME>]: <ACTION>
+```
 
 # Examples
 
