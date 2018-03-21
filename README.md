@@ -9,7 +9,7 @@ The format must look like `<METHOD> /<PATH> [as <NAME>] [uses <MIDDLEWARE>]: <AC
 # Examples
 
 ```yaml
-    GET / as home uses guest: HomeController@index
+GET / as home uses guest: HomeController@index
 ```
 This simple config creates a route with url `/`, named `home`, uses `guest` middleware and executes
     `HomeController@index` action
@@ -17,7 +17,7 @@ This simple config creates a route with url `/`, named `home`, uses `guest` midd
 # Usage
 
 ```php
-    \Serabass\Yaroute\Yaroute::registerFile(__DIR__ . '/api.yaml');
+\Serabass\Yaroute\Yaroute::registerFile(__DIR__ . '/api.yaml');
 ```
 
 Simple group config:
