@@ -2,7 +2,7 @@
 /**
  * @link Specification of YAML 1.2 http://www.yaml.org/spec/1.2/spec.html
  */
-namespace Vendor\Yaroute;
+namespace Serabass\Yaroute;
 
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Yaml\Yaml;

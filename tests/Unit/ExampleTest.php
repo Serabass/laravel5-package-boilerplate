@@ -2,7 +2,7 @@
 
 namespace Vendor\Packages\Tests\Unit;
 
-use Vendor\Yaroute\Tests\PackageTestCase;
+use Serabass\Yaroute\Tests\PackageTestCase;
 
 class ExampleTest extends PackageTestCase
 {

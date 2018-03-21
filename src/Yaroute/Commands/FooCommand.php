@@ -1,6 +1,6 @@
 <?php
 
-namespace Vendor\Yaroute\Commands;
+namespace Serabass\Yaroute\Commands;
 
 use Illuminate\Console\Command;
 

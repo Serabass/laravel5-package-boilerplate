@@ -1,9 +1,9 @@
 <?php 
 
-namespace Vendor\Yaroute;
+namespace Serabass\Yaroute;
 
 use Illuminate\Support\ServiceProvider;
-use Vendor\Yaroute\Commands\FooCommand;
+use Serabass\Yaroute\Commands\FooCommand;
 
 /**
  * A Laravel 5.5 package boilerplate

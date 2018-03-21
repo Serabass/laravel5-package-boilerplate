@@ -4,8 +4,8 @@ namespace Tests\Feature\Yaml;
 
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Support\Facades\Route;
-use Vendor\Yaroute\Tests\PackageTestCase;
-use Vendor\Yaroute\Yaroute;
+use Serabass\Yaroute\Tests\PackageTestCase;
+use Serabass\Yaroute\Yaroute;
 
 class YamlTest extends PackageTestCase
 {
