@@ -1,6 +1,6 @@
 <?php
 
-namespace Vendor\Packages\Tests\Unit;
+namespace Serabass\Yaroute\Tests\Unit;
 
 use Serabass\Yaroute\Tests\PackageTestCase;
 
