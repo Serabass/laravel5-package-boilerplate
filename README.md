@@ -14,6 +14,12 @@ The format must look like `<METHOD> /<PATH> [as <NAME>] [uses <MIDDLEWARE>]: <AC
 This simple config creates a route with url `/`, named `home`, uses `guest` middleware and executes
     `HomeController@index` action
     
+# Usage
+
+```php
+    \Serabass\Yaroute\Yaroute::registerFile(__DIR__ . '/api.yaml');
+```
+
 Simple group config:
 ```yaml
 ^/api uses api:
