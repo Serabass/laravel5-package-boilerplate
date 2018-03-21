@@ -11,9 +11,17 @@ The format must look like `<METHOD> /<PATH> [as <NAME>] [uses <MIDDLEWARE>]: <AC
 ```yaml
 GET / as home uses guest: HomeController@index
 ```
-This simple config creates a route with url `/`, named `home`, uses `guest` middleware and executes
+This simple config creates a route with url `/`, named `home`, that uses `guest` middleware and executes
     `HomeController@index` action
-    
+
+
+```yaml
+^/api uses api:
+  GET /entity: EntityController@list
+```
+
+This simple config creates a group that uses `api` middleware and contains `/entity` route
+
 # Usage
 
 ```php
