@@ -21,7 +21,7 @@ class YamlTest extends PackageTestCase
 
     public function testParseRouteString()
     {
-        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken2 as checkToken2 [api,guest]'), [
+        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken2 as checkToken2 uses api,guest'), [
             'method' => ['GET'],
             'path' => '/checkToken2',
             'name' => 'checkToken2',
@@ -39,27 +39,27 @@ class YamlTest extends PackageTestCase
             'path' => '/checkToken4',
         ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken4 [api]'), [
+        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken4 uses api'), [
             'method' => ['GET'],
             'path' => '/checkToken4',
             'middleware' => ['api'],
         ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken5 as checkToken5 [api]'), [
+        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken5 as checkToken5 uses api'), [
             'method' => ['GET'],
             'path' => '/checkToken5',
             'name' => 'checkToken5',
             'middleware' => ['api'],
         ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('GET    /checkToken5    as    checkToken5    [api,    auth]'), [
+        $this->assertEquals($this->yaml->parseRouteString('GET    /checkToken5    as    checkToken5    uses api,    auth'), [
             'method' => ['GET'],
             'path' => '/checkToken5',
             'name' => 'checkToken5',
             'middleware' => ['api', 'auth'],
         ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('GET|POST|PUT /checkToken6 [api,auth]'), [
+        $this->assertEquals($this->yaml->parseRouteString('GET|POST|PUT /checkToken6 uses api,auth'), [
             'method' => ['GET', 'POST', 'PUT'],
             'path' => '/checkToken6',
             'middleware' => ['api', 'auth'],

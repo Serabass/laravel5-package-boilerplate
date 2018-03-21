@@ -2,7 +2,7 @@ GET /index as subindex1: SubController@index
 GET /index2 as subindex2: SubController@index2
 
 ^/sub2:
-  POST /index as subsubindex [api]:
+  POST /index as subsubindex uses api:
     controller: Sub\SubController
     action: index
 
