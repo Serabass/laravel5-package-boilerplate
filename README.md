@@ -6,7 +6,7 @@
 # Examples
 
 ```yaml
-    GET / as home [guest]: HomeController@index
+    GET / as home uses guest: HomeController@index
 ```
 This simple config creates a route with url `/`, named `home`, uses `guest` middleware and executes
     `HomeController@index` action
