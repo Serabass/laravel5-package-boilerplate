@@ -1,4 +1,4 @@
-**Yaroute** is a simple route-organizer that uses YAML to register route in Laravel.
+**Yaroute** is a simple route-organizer that uses YAML to register routes in Laravel.
 
 # Installation
 ` $ composer require serabass/yaroute `
@@ -27,7 +27,7 @@ Simple group config:
   ^/admin:
     GET /index: AdminController@index
     GET /entity/{id ~ \d+}: AdminController@entity
-    ^/subroute3:
+    ^/subroute:
       GET /entity/{id ~ \d+}: AdminController@entity
       GET /data/{alias ~ .+}: AdminController@entity
 ```
