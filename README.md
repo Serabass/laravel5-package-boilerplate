@@ -12,4 +12,8 @@ This simple config creates a route with url `/`, named `home`, uses `guest` midd
     `HomeController@index` action
     
     
+    
+TODO:
+1. Создать команду artisan yaroute:make api/web, которая сгеренирует yaml-документ.
+    В идеале это будет генератор документов на основании текущих роутов.
 ...
