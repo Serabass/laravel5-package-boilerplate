@@ -2,6 +2,7 @@
 /**
  * @link Specification of YAML 1.2 http://www.yaml.org/spec/1.2/spec.html
  */
+
 namespace Serabass\Yaroute;
 
 use Illuminate\Support\Facades\Route;
@@ -20,10 +21,12 @@ class Yaroute
 
     public $yamlPath;
 
-    public static function registerFile($file) {
+    public static function registerFile($file)
+    {
         $yaml = new Yaroute();
         $file = $yaml->prepareFileName($file);
         $yaml->registerFileImpl($file);
+
         return $yaml;
     }
 
@@ -52,7 +55,7 @@ class Yaroute
 
         return [
             'controller' => $matches['controller'],
-            'action' => $matches['action']
+            'action'     => $matches['action']
         ];
     }
 
@@ -99,14 +102,15 @@ class Yaroute
         }, $url);
 
         return [
-            'url' => $url,
+            'url'    => $url,
             'wheres' => $wheres
         ];
     }
 
     private function isAssoc(array $arr)
     {
-        if (array() === $arr) return false;
+        if ([] === $arr) return false;
+
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
 
@@ -114,6 +118,7 @@ class Yaroute
     {
         $this->yamlPath = $file;
         $contents = file_get_contents($this->yamlPath);
+
         return Yaml::parse($contents);
     }
 
@@ -133,7 +138,7 @@ class Yaroute
         if (!$this->isAssoc($data)) {
             foreach ($data as $file) {
                 $dir = dirname($this->yamlPath);
-                self::registerFile($dir . '/' .$file);
+                self::registerFile($dir . '/' . $file);
             }
         }
 
@@ -218,4 +223,33 @@ class Yaroute
         $this->register($options);
     }
 
+    public function generateYamlFromRoutes()
+    {
+        $methods = ['GET', 'POST'];
+        $routes = Route::getRoutes();
+        $result = [];
+
+        foreach ($methods as $method) {
+            $data = $routes->get($method);
+
+            foreach ($data as $url => $options) {
+                $controller = $options->action['controller'];
+                $where = $options->wheres;
+
+                $uri = preg_replace_callback('/\{(?P<param>[\w]+)\??\}/m', function ($m) use ($url, $where) {
+                    $param = $m['param'];
+                    if (isset($where[$param])) {
+                        return '{' . $param . ' ~ ' . $where[$param] . '}';
+                    }
+
+                    return $m[0];
+                }, $options->uri);
+
+                $row = "$method $uri: $controller";
+                $result[] = $row;
+            }
+        }
+
+        return join("\n", $result);
+    }
 }

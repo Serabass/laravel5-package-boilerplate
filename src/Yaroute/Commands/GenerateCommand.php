@@ -4,6 +4,7 @@ namespace Serabass\Yaroute\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Route;
+use Serabass\Yaroute\Yaroute;
 
 class GenerateCommand extends Command
 {
@@ -19,7 +20,7 @@ class GenerateCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Generates YAML config file in routes directory based on registered routes';
+    protected $description = 'Generates YAML config file based on registered routes and outputs it\'s contents to stdout';
 
     /**
      * Execute the console command.
@@ -28,30 +29,7 @@ class GenerateCommand extends Command
      */
     public function handle()
     {
-        $methods = ['GET', 'POST'];
-        $routes = Route::getRoutes();
-        $result = [];
-
-        foreach ($methods as $method) {
-            $data = $routes->get($method);
-
-            foreach ($data as $url => $options) {
-                $controller = $options->action['controller'];
-                $where = $options->wheres;
-
-                $uri = preg_replace_callback('/\{(?P<param>[\w]+)\??\}/m', function ($m) use ($url, $where) {
-                    $param = $m['param'];
-                    if (isset($where[$param])) {
-                        return '{' . $param . ' ~ ' . $where[$param] . '}';
-                    }
-
-                    return $m[0];
-                }, $options->uri);
-
-                $row = "$method $uri: $controller";
-                $result[] = $row;
-            }
-        }
-        echo join("\n", $result);
+        $yaml = new Yaroute();
+        echo $yaml->generateYamlFromRoutes();
     }
 }
