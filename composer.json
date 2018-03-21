@@ -31,10 +31,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Serabass\\Yaroute\\ServiceProvider"
+                "Serabass\\Yaroute\\YarouteServiceProvider"
             ]
         }
     },
     "license": "MIT"
-    
+
 }
