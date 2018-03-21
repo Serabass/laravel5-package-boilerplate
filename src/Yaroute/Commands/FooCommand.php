@@ -3,6 +3,7 @@
 namespace Serabass\Yaroute\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Route;
 
 class FooCommand extends Command
 {
@@ -11,14 +12,14 @@ class FooCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'yaroute:foo';
+    protected $signature = 'yaroute:generate';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '';
+    protected $description = 'Generates YAML config file in routes directory based on registered routes';
 
     /**
      * Create a new command instance.
@@ -37,6 +38,6 @@ class FooCommand extends Command
      */
     public function handle()
     {
-        //
+        $routes = Route::getRoutes();
     }
 }
