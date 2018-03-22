@@ -12,7 +12,7 @@ use Symfony\Component\Yaml\Yaml;
 class Yaroute
 {
     const FULL_REGEX =
-        '%^(?:(?P<method>[\w|]+)\s+)?(?P<path>/.*?)(?:\s+as\s+(?P<name>[\w.]+?))?(?:\s+uses\s+(?P<middleware>[\w;\s]+))?$%sim';
+        '%^(?:(?P<method>[\w|]+)\s+)?(?P<path>/.*?)(?:\s+as\s+(?P<name>[\w.]+?))?(?:\s+uses\s+(?P<middleware>[\w;:\s]+))?$%sim';
 
     const ACTION_REGEX = '/^(?P<controller>[\w\\\\]+)@(?P<action>\w+)$/sim';
 
