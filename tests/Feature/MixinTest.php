@@ -5,21 +5,9 @@ namespace Tests\Feature\Yaml;
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Support\Facades\Route;
 use Serabass\Yaroute\Tests\PackageTestCase;
-use Serabass\Yaroute\Yaroute;
 
 class MixinTest extends PackageTestCase
 {
-    /**
-     * @var Yaroute
-     */
-    public $yaml;
-
-    public function __construct(string $name = null, array $data = [], string $dataName = '')
-    {
-        parent::__construct($name, $data, $dataName);
-        $this->yaml = new Yaroute();
-    }
-
     public function testMixin()
     {
         $this->yaml->registerFile(__DIR__ . '/yaml/mixins.yaml');
@@ -127,7 +115,6 @@ class MixinTest extends PackageTestCase
         $myRoute = $GETRoutes['my/feedback'];
         $this->assertEquals('SimpleController@feedback', $myRoute->action['controller']);
     }
-
 
     public function testSimpleMixinsWithImports()
     {

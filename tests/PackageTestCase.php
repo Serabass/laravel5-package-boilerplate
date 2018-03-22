@@ -2,12 +2,29 @@
 
 namespace Serabass\Yaroute\Tests;
 
+use Serabass\Yaroute\Yaroute;
 use Serabass\Yaroute\YarouteServiceProvider;
 use Orchestra\Testbench\TestCase;
 
 abstract class PackageTestCase extends TestCase
 {
 
+    /**
+     * @var Yaroute
+     */
+    public $yaml;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->yaml = new Yaroute();
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        $this->yaml = null;
+    }
 
     protected function assertException(callable $callback, $expectedException = 'Exception', $expectedCode = null, $expectedMessage = null)
     {
