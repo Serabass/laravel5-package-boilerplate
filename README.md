@@ -78,11 +78,11 @@ It'll be converted to this:
 ```yaml
 +myResourceMixin(ControllerName, Alias = myResource):
   GET / as ${Alias}.list: ${ControllerName}@list
-  /{id ~ \d+} as ${Alias}.element.:
-    GET / as show: ${ControllerName}@show
-    POST / as update: ${ControllerName}@update
-    PUT / as create: ${ControllerName}@create
-    DELETE / as delete: ${ControllerName}@destroy
+  /{id ~ \d+} as .${Alias}.element:
+    GET / as .show: ${ControllerName}@show
+    POST / as .update: ${ControllerName}@update
+    PUT / as .create: ${ControllerName}@create
+    DELETE / as .delete: ${ControllerName}@destroy
 
 /entity as entityResource:
   +: myResourceMixin(MyEntityController, myEntity)
