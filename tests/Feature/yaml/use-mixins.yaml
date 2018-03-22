@@ -1,0 +1,5 @@
+/:
+  +:
+    - mySimpleMixin()
+    - mySimpleMixin2()
+  GET /feedback: SimpleController@feedback

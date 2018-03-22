@@ -39,3 +39,5 @@
     - mySimpleMixin2()
   GET /feedback: SimpleController@feedback
 
+/my2:
+  - use-mixins

@@ -75,14 +75,16 @@ class Yaroute
     public $mixins = [];
 
     /**
-     * @param $file
+     * @param         $file
+     *
+     * @param Yaroute $yaml
      *
      * @return Yaroute
      * @throws IncorrectDataException
      */
-    public static function registerFile($file)
+    public static function registerFile($file, Yaroute $yaml = null)
     {
-        $yaml = new Yaroute();
+        $yaml = !is_null($yaml) ? $yaml : new Yaroute();
         $file = $yaml->prepareFileName($file);
         $yaml->registerFileImpl($file);
 
@@ -335,7 +337,7 @@ class Yaroute
         if (!$this->isAssoc($data)) {
             foreach ($data as $file) {
                 $dir = dirname($this->yamlPath);
-                self::registerFile($dir . '/' . $file);
+                self::registerFile($dir . '/' . $file, $this);
             }
         }
 

@@ -126,6 +126,40 @@ class MixinTest extends PackageTestCase
         $this->assertArrayHasKey('my/feedback', $GETRoutes);
         $myRoute = $GETRoutes['my/feedback'];
         $this->assertEquals('SimpleController@feedback', $myRoute->action['controller']);
+    }
+
+
+    public function testSimpleMixinsWithImports()
+    {
+        $this->yaml->registerFile(__DIR__ . '/yaml/mixins.yaml');
+        $routes = Route::getRoutes();
+
+        $this->assertTrue($routes instanceof RouteCollection);
+        $GETRoutes = $routes->get('GET');
+        $POSTRoutes = $routes->get('POST');
+
+        $this->assertNotNull($GETRoutes);
+        $this->assertNotNull($POSTRoutes);
+
+        $this->assertArrayHasKey('my2', $GETRoutes);
+        $myRoute = $GETRoutes['my2'];
+        $this->assertEquals('SimpleController@index', $myRoute->action['controller']);
+
+        $this->assertArrayHasKey('my2/info', $GETRoutes);
+        $myRoute = $GETRoutes['my2/info'];
+        $this->assertEquals('SimpleController@info', $myRoute->action['controller']);
+
+        $this->assertArrayHasKey('my2/submit', $POSTRoutes);
+        $myRoute = $POSTRoutes['my2/submit'];
+        $this->assertEquals('SimpleController@submit', $myRoute->action['controller']);
+
+        $this->assertArrayHasKey('my2/contact', $GETRoutes);
+        $myRoute = $GETRoutes['my2/contact'];
+        $this->assertEquals('SimpleController@contact', $myRoute->action['controller']);
+
+        $this->assertArrayHasKey('my2/feedback', $GETRoutes);
+        $myRoute = $GETRoutes['my2/feedback'];
+        $this->assertEquals('SimpleController@feedback', $myRoute->action['controller']);
 
     }
 }
