@@ -1,7 +1,7 @@
 
 +myResourceMixin(ControllerName, Alias = myResource):
   GET / as ${Alias}.list: ${ControllerName}@list
-  ^/{id ~ \d+} as ${Alias}.element.:
+  /{id ~ \d+} as ${Alias}.element.:
     GET / as show: ${ControllerName}@show
     POST / as update: ${ControllerName}@update
     PUT / as create: ${ControllerName}@create
@@ -9,7 +9,7 @@
 
 +myResourceMixin2(ControllerName, Alias):
   GET / as ${Alias}.list: ${ControllerName}@list
-  ^/{id ~ \d+} as ${Alias}.element.:
+  /{id ~ \d+} as ${Alias}.element.:
     GET / as show: ${ControllerName}@show
     POST / as update: ${ControllerName}@update
     PUT / as create: ${ControllerName}@create

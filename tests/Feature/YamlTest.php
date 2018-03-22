@@ -25,6 +25,8 @@ class YamlTest extends PackageTestCase
 
     public function testParseRouteString()
     {
+        $this->assertNull($this->yaml->parseRouteString('/'));
+
         $this->assertEquals($this->yaml->parseRouteString('GET /checkToken2 as checkToken2 uses api;guest'),
             [
                 'method'     => ['GET'],
@@ -92,6 +94,15 @@ class YamlTest extends PackageTestCase
 
     public function testParseGroupString()
     {
+        $this->assertEquals($this->yaml->parseGroupString('/'), [
+            'prefix' => '/'
+        ]);
+
+        $this->assertEquals($this->yaml->parseGroupString('/ as root'), [
+            'prefix' => '/',
+            'as' => 'root'
+        ]);
+
         $this->assertEquals($this->yaml->parseGroupString('/ uses auth:api'),
             [
                 'prefix' => '/',
