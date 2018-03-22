@@ -28,6 +28,8 @@ class GenerateCommand extends Command
     public function handle()
     {
         $yaml = new Yaroute();
-        echo $yaml->generateYamlFromRoutes();
+        $generateYamlFromRoutes = $yaml->generateYamlFromRoutes();
+        echo $generateYamlFromRoutes;
+        return $generateYamlFromRoutes;
     }
 }

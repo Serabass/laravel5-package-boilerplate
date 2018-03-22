@@ -4,7 +4,6 @@ namespace Tests\Feature\Yaml;
 
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Support\Facades\Route;
-use Serabass\Yaroute\IncorrectDataException;
 use Serabass\Yaroute\Tests\PackageTestCase;
 
 class NamedGroupsTest extends PackageTestCase

@@ -2,9 +2,8 @@
 
 namespace Tests\Feature\Yaml;
 
-use Illuminate\Routing\RouteCollection;
 use Illuminate\Support\Facades\Route;
-use Serabass\Yaroute\IncorrectDataException;
+use Serabass\Yaroute\Commands\GenerateCommand;
 use Serabass\Yaroute\Tests\PackageTestCase;
 
 class GenerateTest extends PackageTestCase
@@ -38,7 +37,12 @@ class GenerateTest extends PackageTestCase
             Route::get('/sandbox/{param}', 'SandboxController@index')->name('sandbox');
         });
 
+        $cmd = new GenerateCommand();
+        $result = $cmd->handle();
         $yaml = $this->yaml->generateYamlFromRoutes();
+
+        $this->assertEquals($result, $yaml);
+
         $expected = [
             'GET / as home: HomeController@index',
             'GET /api/entity as api.entity.list: Api\\EntityController@index',
