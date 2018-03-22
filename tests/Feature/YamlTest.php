@@ -25,55 +25,63 @@ class YamlTest extends PackageTestCase
 
     public function testParseRouteString()
     {
-        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken2 as checkToken2 uses api;guest'), [
-            'method'     => ['GET'],
-            'path'       => '/checkToken2',
-            'name'       => 'checkToken2',
-            'middleware' => ['api', 'guest'],
-        ]);
+        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken2 as checkToken2 uses api;guest'),
+            [
+                'method'     => ['GET'],
+                'path'       => '/checkToken2',
+                'name'       => 'checkToken2',
+                'middleware' => ['api', 'guest'],
+            ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('GET|POST /checkToken3 as checkToken3'), [
-            'method' => ['GET', 'POST'],
-            'path'   => '/checkToken3',
-            'name'   => 'checkToken3',
-        ]);
+        $this->assertEquals($this->yaml->parseRouteString('GET|POST /checkToken3 as checkToken3'),
+            [
+                'method' => ['GET', 'POST'],
+                'path'   => '/checkToken3',
+                'name'   => 'checkToken3',
+            ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken4'), [
-            'method' => ['GET'],
-            'path'   => '/checkToken4',
-        ]);
+        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken4'),
+            [
+                'method' => ['GET'],
+                'path'   => '/checkToken4',
+            ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken4 uses api'), [
-            'method'     => ['GET'],
-            'path'       => '/checkToken4',
-            'middleware' => ['api'],
-        ]);
+        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken4 uses api'),
+            [
+                'method'     => ['GET'],
+                'path'       => '/checkToken4',
+                'middleware' => ['api'],
+            ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken5 as checkToken5 uses api'), [
-            'method'     => ['GET'],
-            'path'       => '/checkToken5',
-            'name'       => 'checkToken5',
-            'middleware' => ['api'],
-        ]);
+        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken5 as checkToken5 uses api'),
+            [
+                'method'     => ['GET'],
+                'path'       => '/checkToken5',
+                'name'       => 'checkToken5',
+                'middleware' => ['api'],
+            ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('GET    /checkToken5    as    checkToken5    uses api;    auth'), [
-            'method'     => ['GET'],
-            'path'       => '/checkToken5',
-            'name'       => 'checkToken5',
-            'middleware' => ['api', 'auth'],
-        ]);
+        $this->assertEquals($this->yaml->parseRouteString('GET    /checkToken5    as    checkToken5    uses api;    auth'),
+            [
+                'method'     => ['GET'],
+                'path'       => '/checkToken5',
+                'name'       => 'checkToken5',
+                'middleware' => ['api', 'auth'],
+            ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('GET|POST|PUT /checkToken6 uses api;auth'), [
-            'method'     => ['GET', 'POST', 'PUT'],
-            'path'       => '/checkToken6',
-            'middleware' => ['api', 'auth'],
-        ]);
+        $this->assertEquals($this->yaml->parseRouteString('GET|POST|PUT /checkToken6 uses api;auth'),
+            [
+                'method'     => ['GET', 'POST', 'PUT'],
+                'path'       => '/checkToken6',
+                'middleware' => ['api', 'auth'],
+            ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('/checkToken7 as checkToken7'), [
-            'method' => ['GET'],
-            'path'   => '/checkToken7',
-            'name'   => 'checkToken7',
-        ]);
+        $this->assertEquals($this->yaml->parseRouteString('/checkToken7 as checkToken7'),
+            [
+                'method' => ['GET'],
+                'path'   => '/checkToken7',
+                'name'   => 'checkToken7',
+            ]);
 
         $this->assertException(function () {
             $this->yaml->parseMixinString('::myResourceMixin2(ControllerName, Alias = = = =)', null);
@@ -98,7 +106,7 @@ class YamlTest extends PackageTestCase
 
     public function testExample()
     {
-        $this->yaml->registerFile(__DIR__ . '/routes1.yaml');
+        $this->yaml->registerFile(__DIR__ . '/yaml/routes1.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');
@@ -186,82 +194,6 @@ class YamlTest extends PackageTestCase
         $this->assertEquals(['GET', 'HEAD'], $GETRoutes['included-route/index/{id}']->methods);
         $this->assertEquals('myIndex', $GETRoutes['included-route/index/{id}']->action['as']);
 
-    }
-
-    public function testMixin()
-    {
-        $this->yaml->registerFile(__DIR__ . '/mixins.yaml');
-        $routes = Route::getRoutes();
-        $this->assertTrue($routes instanceof RouteCollection);
-        $GETRoutes = $routes->get('GET');
-        $POSTRoutes = $routes->get('POST');
-        $PUTRoutes = $routes->get('PUT');
-        $DELETERoutes = $routes->get('DELETE');
-        $this->assertNotNull($GETRoutes);
-        $this->assertNotNull($POSTRoutes);
-        $this->assertNotNull($PUTRoutes);
-        $this->assertNotNull($DELETERoutes);
-
-        $this->assertArrayHasKey('entity', $GETRoutes);
-        $entityListRoute = $GETRoutes['entity'];
-        $this->assertEquals('myEntity.list', $entityListRoute->action['as']);
-
-
-        $this->assertArrayHasKey('entity/{id}', $GETRoutes);
-        $entityElementRoute = $GETRoutes['entity/{id}'];
-        $this->assertEquals('show', $entityElementRoute->action['as']);
-
-        $this->assertArrayHasKey('entity/{id}', $POSTRoutes);
-        $entityUpdateRoute = $POSTRoutes['entity/{id}'];
-        $this->assertEquals('update', $entityUpdateRoute->action['as']);
-
-        $this->assertArrayHasKey('entity/{id}', $PUTRoutes);
-        $entityCreateRoute = $PUTRoutes['entity/{id}'];
-        $this->assertEquals('create', $entityCreateRoute->action['as']);
-
-
-        $this->assertArrayHasKey('entity2', $GETRoutes);
-        $entityListRoute = $GETRoutes['entity2'];
-        $this->assertEquals('MyEntityController@list', $entityListRoute->action['controller']);
-        $this->assertEquals('.list', $entityListRoute->action['as']);
-
-        $this->assertArrayHasKey('entity2/{id}', $GETRoutes);
-        $entityElementRoute = $GETRoutes['entity2/{id}'];
-        $this->assertEquals('show', $entityElementRoute->action['as']);
-
-        $this->assertArrayHasKey('entity2/{id}', $POSTRoutes);
-        $entityUpdateRoute = $POSTRoutes['entity2/{id}'];
-        $this->assertEquals('update', $entityUpdateRoute->action['as']);
-
-        $this->assertArrayHasKey('entity2/{id}', $PUTRoutes);
-        $entityCreateRoute = $PUTRoutes['entity2/{id}'];
-        $this->assertEquals('create', $entityCreateRoute->action['as']);
-
-
-        $this->assertArrayHasKey('entity3', $GETRoutes);
-        $entityListRoute = $GETRoutes['entity3'];
-        $this->assertEquals('MyEntityController@list', $entityListRoute->action['controller']);
-        $this->assertEquals('.list', $entityListRoute->action['as']);
-
-        $this->assertArrayHasKey('entity3/{id}', $GETRoutes);
-        $entityElementRoute = $GETRoutes['entity3/{id}'];
-        $this->assertEquals('show', $entityElementRoute->action['as']);
-
-        $this->assertArrayHasKey('entity3/{id}', $POSTRoutes);
-        $entityUpdateRoute = $POSTRoutes['entity3/{id}'];
-        $this->assertEquals('update', $entityUpdateRoute->action['as']);
-
-        $this->assertArrayHasKey('entity3/{id}', $PUTRoutes);
-        $entityCreateRoute = $PUTRoutes['entity3/{id}'];
-        $this->assertEquals('create', $entityCreateRoute->action['as']);
-
-        $this->assertArrayHasKey('entity3/{id}', $PUTRoutes);
-        $entityCreateRoute = $PUTRoutes['entity3/{id}'];
-        $this->assertEquals('create', $entityCreateRoute->action['as']);
-
-        $this->assertArrayHasKey('entity3/anotherRoute', $GETRoutes);
-        $entity3GetRoute = $GETRoutes['entity3/anotherRoute'];
-        $this->assertEquals('another', $entity3GetRoute->action['as']);
     }
 
     public function testRegisterNull()
