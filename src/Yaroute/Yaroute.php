@@ -358,6 +358,10 @@ class Yaroute
                 $options['prefix'] = $wheres['url'];
                 $options['wheres'] = $wheres['wheres'];
 
+                if (isset($groupMatches['as'])) {
+                    $options['as'] = $groupMatches['as'];
+                }
+
                 Route::group($options, function () use ($value, $url) {
                     $this->register($value);
                 });

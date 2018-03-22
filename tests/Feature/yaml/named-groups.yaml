@@ -1,0 +1,5 @@
+/group1 as g1:
+  GET / as .home: Controller@action
+  GET /info as .info: Controller@action
+  /sub1 as .sub1:
+    GET /home as .subhome: Controller@action

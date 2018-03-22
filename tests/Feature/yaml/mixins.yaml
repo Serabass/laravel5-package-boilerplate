@@ -1,19 +1,19 @@
 
 +myResourceMixin(ControllerName, Alias = myResource):
-  GET / as ${Alias}.list: ${ControllerName}@list
-  /{id ~ \d+} as ${Alias}.element.:
-    GET / as show: ${ControllerName}@show
-    POST / as update: ${ControllerName}@update
-    PUT / as create: ${ControllerName}@create
-    DELETE / as delete: ${ControllerName}@destroy
+  GET / as .${Alias}.list: ${ControllerName}@list
+  /{id ~ \d+} as .${Alias}.element:
+    GET / as .show: ${ControllerName}@show
+    POST / as .update: ${ControllerName}@update
+    PUT / as .create: ${ControllerName}@create
+    DELETE / as .delete: ${ControllerName}@destroy
 
-+myResourceMixin2(ControllerName, Alias):
-  GET / as ${Alias}.list: ${ControllerName}@list
-  /{id ~ \d+} as ${Alias}.element.:
-    GET / as show: ${ControllerName}@show
-    POST / as update: ${ControllerName}@update
-    PUT / as create: ${ControllerName}@create
-    DELETE / as delete: ${ControllerName}@destroy
++myResourceMixin2(ControllerName, Alias = myAlias):
+  GET / as .${Alias}.list: ${ControllerName}@list
+  /{id ~ \d+} as .${Alias}.element:
+    GET / as .show: ${ControllerName}@show
+    POST / as .update: ${ControllerName}@update
+    PUT / as .create: ${ControllerName}@create
+    DELETE / as .delete: ${ControllerName}@destroy
 
 /entity as entityResource:
   +: myResourceMixin(MyEntityController, myEntity)
@@ -22,8 +22,8 @@
   +: myResourceMixin2(MyEntityController)
 
 /entity3 as entity3Resource:
-  +: myResourceMixin2(MyEntityController)
-  GET /anotherRoute as another: MyEntityController@anotherAction
+  +: myResourceMixin2(MyEntityController, myAlias3)
+  GET /anotherRoute as .another: MyEntityController@anotherAction
 
 +mySimpleMixin:
   GET /: SimpleController@index

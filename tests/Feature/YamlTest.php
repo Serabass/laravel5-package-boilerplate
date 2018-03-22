@@ -193,7 +193,7 @@ class YamlTest extends PackageTestCase
 
         $this->assertArrayHasKey('sub/index', $GETRoutes);
         $this->assertEquals(['GET', 'HEAD'], $GETRoutes['sub/index']->methods);
-        $this->assertEquals('subindex1', $GETRoutes['sub/index']->action['as']);
+        $this->assertEquals('sub1.subindex1', $GETRoutes['sub/index']->action['as']);
 
         $this->assertArrayHasKey('sub/sub2/index', $GETRoutes);
         $this->assertEquals(['GET', 'HEAD'], $GETRoutes['sub/sub2/index']->methods);
@@ -207,7 +207,7 @@ class YamlTest extends PackageTestCase
 
         $this->assertArrayHasKey('included-route/index/{id}', $GETRoutes);
         $this->assertEquals(['GET', 'HEAD'], $GETRoutes['included-route/index/{id}']->methods);
-        $this->assertEquals('myIndex', $GETRoutes['included-route/index/{id}']->action['as']);
+        $this->assertEquals('parent.myIndex', $GETRoutes['included-route/index/{id}']->action['as']);
 
     }
 
@@ -221,45 +221,5 @@ class YamlTest extends PackageTestCase
         $this->assertFalse($this->yaml->register([
             'GET /' => null
         ]));
-    }
-
-    public function testGenerateYamlFromRoutes()
-    {
-        Route::get('/', 'HomeController@index')->name('home');
-
-        Route::group(['prefix' => 'api'], function () {
-            Route::get('/entity', 'Api\\EntityController@index')->name('entity.list');
-
-            Route::post('/entity', 'Api\\EntityController@create')->name('entity.save');
-
-            Route::get('/entity/{id}', 'Api\\EntityController@get')
-                ->name('entity.get')
-                ->where('id', '\d+');
-
-            Route::group(['prefix' => '/article/{alias}', 'where' => ['alias' => '\w+']], function () {
-                Route::get('index', 'ArticleController@index');
-                Route::delete('', 'ArticleController@destroy');
-            });
-
-            Route::get('/sandbox/{param}', 'SandboxController@index')->name('sandbox');
-        });
-
-        $yaml = $this->yaml->generateYamlFromRoutes();
-        $expected = [
-            'GET / as home: HomeController@index',
-            'GET /api/entity as entity.list: Api\\EntityController@index',
-            'GET /api/entity/{id ~ \d+} as entity.get: Api\\EntityController@get',
-            'GET /api/article/{alias ~ \w+}/index: ArticleController@index',
-            'GET /api/sandbox/{param} as sandbox: SandboxController@index',
-            'POST /api/entity as entity.save: Api\\EntityController@create',
-            'DELETE /api/article/{alias ~ \w+}: ArticleController@destroy',
-            'HEAD / as home: HomeController@index',
-            'HEAD /api/entity as entity.list: Api\\EntityController@index',
-            'HEAD /api/entity/{id ~ \d+} as entity.get: Api\\EntityController@get',
-            'HEAD /api/article/{alias ~ \w+}/index: ArticleController@index',
-            'HEAD /api/sandbox/{param} as sandbox: SandboxController@index',
-        ];
-        $joined = join("\n", $expected);
-        $this->assertEquals($joined, $yaml);
     }
 }
