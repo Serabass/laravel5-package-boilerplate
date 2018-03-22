@@ -24,3 +24,17 @@
 /entity3 as entity3Resource:
   +: myResourceMixin2(MyEntityController)
   GET /anotherRoute as another: MyEntityController@anotherAction
+
++mySimpleMixin:
+  GET /: SimpleController@index
+  GET /info: SimpleController@info
+  POST /submit: SimpleController@submit
+
++mySimpleMixin2:
+  GET /contact: SimpleController@contact
+
+/my:
+  +:
+    - mySimpleMixin()
+    - mySimpleMixin2()
+  GET /feedback: SimpleController@feedback

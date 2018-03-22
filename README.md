@@ -9,7 +9,7 @@ The format of simple route must look like `<METHOD> /<PATH> [as <NAME>] [uses <M
 The format of group must look like:
 
 ```yaml
-^<PREFIX> [uses <MIDDLEWARE>]:
+<PREFIX> [uses <MIDDLEWARE>]:
   <METHOD> /<PATH> [as <NAME>]: <ACTION>
 ```
 
@@ -25,7 +25,7 @@ This simple config creates a route with url `/`, named `home`, that uses `guest`
 
 
 ```yaml
-^/api uses api:
+/api uses api:
   GET /entity: EntityController@list
 ```
 
@@ -39,7 +39,7 @@ This simple config creates a group that uses `api` middleware and contains `/ent
 
 Simple group config:
 ```yaml
-^/api uses api:
+/api uses api:
   GET /entity: EntityController@list
   GET /entity/{id ~ \d+}: EntityController@get
   POST /entity/{id ~ \d+}: EntityController@save
@@ -47,10 +47,10 @@ Simple group config:
   GET /entity/{id}/getComments:
     action: EntityController@getComments
 
-  ^/admin:
+  /admin:
     GET /index: AdminController@index
     GET /entity/{id ~ \d+}: AdminController@entity
-    ^/subroute:
+    /subroute:
       GET /entity/{id ~ \d+}: AdminController@entity
       GET /data/{alias ~ .+}: AdminController@getData
 ```
@@ -78,13 +78,13 @@ It'll be converted to this:
 ```yaml
 ::myResourceMixin(ControllerName, Alias = myResource):
   GET / as ${Alias}.list: ${ControllerName}@list
-  ^/{id ~ \d+} as ${Alias}.element.:
+  /{id ~ \d+} as ${Alias}.element.:
     GET / as show: ${ControllerName}@show
     POST / as update: ${ControllerName}@update
     PUT / as create: ${ControllerName}@create
     DELETE / as delete: ${ControllerName}@destroy
 
-^/entity as entityResource:
+/entity as entityResource:
   +: myResourceMixin(MyEntityController, myEntity)
 ```
 

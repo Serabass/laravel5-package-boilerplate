@@ -209,6 +209,26 @@ class Yaroute
         return $string;
     }
 
+    private function useMixin($value) {
+        preg_match('/^(?P<name>\w+)(?:\((?P<params>.*?)\))?$/m', $value, $matches);
+        $name = $matches['name'];
+        $passedParams = preg_split('/\s*,\s*/', $matches['params']);
+        $mixin = $this->mixins[$name];
+        $paramsOrder = $mixin['paramsOrder'];
+        $paramsForCallback = [];
+
+        foreach ($paramsOrder as $index => $paramValue) {
+            if (!empty($passedParams[$index])) {
+                $paramsForCallback[$paramValue] = $passedParams[$index];
+            } else {
+                $paramsForCallback[$paramValue] = $mixin['params'][$paramValue];
+            }
+        }
+
+        $result = $mixin['callback']($paramsForCallback);
+        $this->register($result);
+    }
+
     public function register($data): bool
     {
         if (is_null($data))
@@ -244,23 +264,13 @@ class Yaroute
             }
 
             if ($url === '+') {
-                preg_match('/^(?P<name>\w+)\((?P<params>.+?)\)$/m', $value, $matches);
-                $name = $matches['name'];
-                $passedParams = preg_split('/\s*,\s*/', $matches['params']);
-                $mixin = $this->mixins[$name];
-                $paramsOrder = $mixin['paramsOrder'];
-                $paramsForCallback = [];
-
-                foreach ($paramsOrder as $index => $paramValue) {
-                    if (!empty($passedParams[$index])) {
-                        $paramsForCallback[$paramValue] = $passedParams[$index];
-                    } else {
-                        $paramsForCallback[$paramValue] = $mixin['params'][$paramValue];
+                if (is_string($value)) {
+                    $this->useMixin($value);
+                } elseif (is_array($value) && !$this->isAssoc($value)) {
+                    foreach ($value as $index => $item) {
+                        $this->useMixin($item);
                     }
                 }
-
-                $result = $mixin['callback']($paramsForCallback);
-                $this->register($result);
             }
 
             if ($urlMatches = $this->parseRouteString($url)) {
