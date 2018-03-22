@@ -6,6 +6,7 @@
 namespace Serabass\Yaroute;
 
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\Yaml\Yaml;
 
 class Yaroute
@@ -310,7 +311,6 @@ class Yaroute
                         $route->middleware(join(',', $urlMatches['middleware']));
                     }
                 } else {
-                    dump(12312312312);
                     return false;
                 }
             }
@@ -328,7 +328,7 @@ class Yaroute
 
     public function generateYamlFromRoutes()
     {
-        $methods = ['GET', 'POST', 'DELETE'];
+        $methods = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'];
         $routes = Route::getRoutes();
         $result = [];
 

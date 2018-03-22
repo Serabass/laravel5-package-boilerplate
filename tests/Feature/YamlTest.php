@@ -3,10 +3,12 @@
 namespace Tests\Feature\Yaml;
 
 use Illuminate\Routing\RouteCollection;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Serabass\Yaroute\IncorrectDataException;
 use Serabass\Yaroute\Tests\PackageTestCase;
 use Serabass\Yaroute\Yaroute;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class YamlTest extends PackageTestCase
 {
@@ -300,6 +302,11 @@ class YamlTest extends PackageTestCase
             'GET /api/sandbox/{param} as sandbox: SandboxController@index',
             'POST /api/entity as entity.save: Api\\EntityController@create',
             'DELETE /api/article/{alias ~ \w+}: ArticleController@destroy',
+            'HEAD / as home: HomeController@index',
+            'HEAD /api/entity as entity.list: Api\\EntityController@index',
+            'HEAD /api/entity/{id ~ \d+} as entity.get: Api\\EntityController@get',
+            'HEAD /api/article/{alias ~ \w+}/index: ArticleController@index',
+            'HEAD /api/sandbox/{param} as sandbox: SandboxController@index',
         ];
         $joined = join("\n", $expected);
         $this->assertEquals($joined, $yaml);
