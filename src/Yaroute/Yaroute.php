@@ -94,6 +94,13 @@ class Yaroute
         return $result;
     }
 
+    /**
+     * @param $string
+     * @param $value
+     *
+     * @return array|null
+     * @throws IncorrectDataException
+     */
     public function parseMixinString($string, $value)
     {
         if (!preg_match(self::MIXIN_REGEX, $string, $matches)) {
@@ -119,7 +126,7 @@ class Yaroute
                     $parametersWithValues[$paramName] = $paramValue;
                     break;
                 default:
-                    throw new \Exception();
+                    throw new IncorrectDataException();
             }
             $paramsOrder[] = $paramName;
         }
@@ -136,7 +143,7 @@ class Yaroute
                 if (is_string($route)) {
                     $route = preg_replace_callback('/\$\{(?P<name>\w+)}/', $closure, $route);
                 } else {
-                    array_walk_recursive($route, function (&$value,&$key) use($closure) {
+                    array_walk_recursive($route, function (&$value, &$key) use ($closure) {
                         $key = preg_replace_callback('/\$\{(?P<name>\w+)}/', $closure, $key);
                         $value = preg_replace_callback('/\$\{(?P<name>\w+)}/', $closure, $value);
                     });
@@ -320,7 +327,7 @@ class Yaroute
 
     public function generateYamlFromRoutes()
     {
-        $methods = ['GET', 'POST'];
+        $methods = ['GET', 'POST', 'DELETE'];
         $routes = Route::getRoutes();
         $result = [];
 
@@ -333,6 +340,7 @@ class Yaroute
 
                 $uri = preg_replace_callback('/\{(?P<param>[\w]+)\??\}/m', function ($m) use ($url, $where) {
                     $param = $m['param'];
+
                     if (isset($where[$param])) {
                         return '{' . $param . ' ~ ' . $where[$param] . '}';
                     }
@@ -340,7 +348,16 @@ class Yaroute
                     return $m[0];
                 }, $options->uri);
 
-                $row = "$method $uri: $controller";
+                if (isset($options->action['as'])) {
+                    $as = $options->action['as'];
+                    $uri = $uri . " as $as";
+                }
+
+                if (!starts_with($url, '/')) {
+                    $uri = '/' . $uri;
+                }
+
+                $row = "$method ${uri}: $controller";
                 $result[] = $row;
             }
         }

@@ -4,6 +4,7 @@ namespace Tests\Feature\Yaml;
 
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Support\Facades\Route;
+use Serabass\Yaroute\IncorrectDataException;
 use Serabass\Yaroute\Tests\PackageTestCase;
 use Serabass\Yaroute\Yaroute;
 
@@ -71,6 +72,10 @@ class YamlTest extends PackageTestCase
             'path'   => '/checkToken7',
             'name'   => 'checkToken7',
         ]);
+
+        $this->assertException(function () {
+            $this->yaml->parseMixinString('::myResourceMixin2(ControllerName, Alias = = = =)', null);
+        }, IncorrectDataException::class);
 
         $this->assertNull($this->yaml->parseRouteString('malformed string'));
     }
@@ -213,8 +218,6 @@ class YamlTest extends PackageTestCase
         $this->assertEquals('create', $entityCreateRoute->action['as']);
 
 
-
-
         $this->assertArrayHasKey('entity2', $GETRoutes);
         $entityListRoute = $GETRoutes['entity2'];
         $this->assertEquals('MyEntityController@list', $entityListRoute->action['controller']);
@@ -231,7 +234,6 @@ class YamlTest extends PackageTestCase
         $this->assertArrayHasKey('entity2/{id}', $PUTRoutes);
         $entityCreateRoute = $PUTRoutes['entity2/{id}'];
         $this->assertEquals('create', $entityCreateRoute->action['as']);
-
 
 
         $this->assertArrayHasKey('entity3', $GETRoutes);
@@ -258,5 +260,32 @@ class YamlTest extends PackageTestCase
         $this->assertArrayHasKey('entity3/anotherRoute', $GETRoutes);
         $entity3GetRoute = $GETRoutes['entity3/anotherRoute'];
         $this->assertEquals('another', $entity3GetRoute->action['as']);
+    }
+
+    public function testGenerateYamlFromRoutes()
+    {
+        Route::get('/', 'HomeController@index')->name('home');
+        Route::group(['prefix' => 'api'], function () {
+            Route::get('/entity', 'Api\\EntityController@index')->name('entity.list');
+            Route::post('/entity', 'Api\\EntityController@create')->name('entity.save');
+            Route::get('/entity/{id}', 'Api\\EntityController@get')
+                ->name('entity.get')
+                ->where('id', '\d+');
+
+            Route::group(['prefix' => '/article/{alias}', 'where' => ['alias' => '\w+']], function () {
+                Route::get('index', 'ArticleController@index');
+                Route::delete('', 'ArticleController@destroy');
+            });
+        });
+        $yaml = $this->yaml->generateYamlFromRoutes();
+        $expected = [
+            'GET / as home: HomeController@index',
+            'GET /api/entity as entity.list: Api\\EntityController@index',
+            'GET /api/entity/{id ~ \d+} as entity.get: Api\\EntityController@get',
+            'GET /api/article/{alias ~ \w+}/index: ArticleController@index',
+            'POST /api/entity as entity.save: Api\\EntityController@create',
+            'DELETE /api/article/{alias ~ \w+}: ArticleController@destroy',
+        ];
+        $this->assertEquals(join("\n", $expected), $yaml);
     }
 }
