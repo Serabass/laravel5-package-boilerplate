@@ -90,6 +90,24 @@ class YamlTest extends PackageTestCase
         $this->assertNull($this->yaml->parseRouteString('malformed string'));
     }
 
+    public function testParseGroupString()
+    {
+        $this->assertEquals($this->yaml->parseGroupString('^/ uses auth:api'),
+            [
+                'prefix' => '/',
+                'middleware'   => ['auth:api'],
+                'as' => ''
+            ]);
+
+        $this->assertEquals($this->yaml->parseGroupString('^/{id} as name uses auth:api'),
+            [
+                'prefix' => '/{id}',
+                'middleware'   => ['auth:api'],
+                'as'   => 'name',
+            ]);
+
+    }
+
     public function testParseActionString()
     {
         $this->assertEquals($this->yaml->parseActionString('UserController@myAction'), [
@@ -140,30 +158,30 @@ class YamlTest extends PackageTestCase
         $this->assertArrayHasKey('api/entity', $GETRoutes);
         $this->assertEquals(['GET', 'HEAD'], $GETRoutes['api/entity']->methods);
 
-        $this->assertEquals('api', $GETRoutes['api/entity']->action['middleware']);
+        $this->assertEquals(['api'], $GETRoutes['api/entity']->action['middleware']);
         $this->assertEquals('EntityController@list', $GETRoutes['api/entity']->action['controller']);
 
         $this->assertArrayHasKey('api/entity/{id}', $POSTRoutes);
         $this->assertEquals(['POST'], $POSTRoutes['api/entity/{id}']->methods);
-        $this->assertEquals('api', $POSTRoutes['api/entity/{id}']->action['middleware']);
+        $this->assertEquals(['api'], $POSTRoutes['api/entity/{id}']->action['middleware']);
         $wheres = $POSTRoutes['api/entity/{id}']->wheres;
         $this->assertArrayHasKey('id', $wheres);
         $this->assertEquals('\d+', $wheres['id']);
 
         $this->assertArrayHasKey('api/admin/index', $GETRoutes);
         $this->assertEquals(['GET', 'HEAD'], $GETRoutes['api/admin/index']->methods);
-        $this->assertEquals('api', $GETRoutes['api/admin/index']->action['middleware']);
+        $this->assertEquals(['api'], $GETRoutes['api/admin/index']->action['middleware']);
 
         $this->assertArrayHasKey('api/admin/entity/{id}', $GETRoutes);
         $this->assertEquals(['GET', 'HEAD'], $GETRoutes['api/admin/entity/{id}']->methods);
-        $this->assertEquals('api', $GETRoutes['api/admin/entity/{id}']->action['middleware']);
+        $this->assertEquals(['api'], $GETRoutes['api/admin/entity/{id}']->action['middleware']);
         $wheres = $GETRoutes['api/admin/entity/{id}']->wheres;
         $this->assertArrayHasKey('id', $wheres);
         $this->assertEquals('\d+', $wheres['id']);
 
         $this->assertArrayHasKey('api/admin/subroute3/entity/{id}', $GETRoutes);
         $this->assertEquals(['GET', 'HEAD'], $GETRoutes['api/admin/subroute3/entity/{id}']->methods);
-        $this->assertEquals('api', $GETRoutes['api/admin/subroute3/entity/{id}']->action['middleware']);
+        $this->assertEquals(['api'], $GETRoutes['api/admin/subroute3/entity/{id}']->action['middleware']);
         $wheres = $GETRoutes['api/admin/subroute3/entity/{id}']->wheres;
         $this->assertArrayHasKey('id', $wheres);
         $this->assertEquals('\d+', $wheres['id']);
@@ -171,7 +189,7 @@ class YamlTest extends PackageTestCase
 
         $this->assertArrayHasKey('api/admin123/{section}/index', $GETRoutes);
         $this->assertEquals(['GET', 'HEAD'], $GETRoutes['api/admin123/{section}/index']->methods);
-        $this->assertEquals('api', $GETRoutes['api/admin123/{section}/index']->action['middleware']);
+        $this->assertEquals(['api'], $GETRoutes['api/admin123/{section}/index']->action['middleware']);
         $wheres = $GETRoutes['api/admin123/{section}/index']->action['wheres'];
         $this->assertArrayHasKey('section', $wheres);
         $this->assertEquals('\w+', $wheres['section']);

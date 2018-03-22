@@ -46,7 +46,7 @@ class Yaroute
         ];
 
         if (isset($matches['middleware'])) {
-            $result['middleware'] = $matches['middleware'];
+            $result['middleware'] = preg_split('/\s*;\s*/', $matches['middleware']);
         }
 
         if (isset($matches['name'])) {
