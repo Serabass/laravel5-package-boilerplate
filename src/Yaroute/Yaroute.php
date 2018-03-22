@@ -15,11 +15,15 @@ class Yaroute
 
     const ACTION_REGEX = '/^(?P<controller>[\w\\\\]+)@(?P<action>\w+)$/sim';
 
-    const GROUP_REGEX = '%^\^(?P<prefix>/.+?)(?:\s+uses\s+(?P<middleware>[\w,:\s]+))?$%sim';
+    const GROUP_REGEX = '%^\^(?P<prefix>/.+?)(?:\s+as\s+(?P<name>[\w.]+?))?(?:\s+uses\s+(?P<middleware>[\w,:\s]+))?$%sim';
 
     const PARAM_REGEX = '/\{(?P<param>[\w?]+)(?:\s+~\s+(?P<regex>.+?))?\}/sim';
 
+    const MIXIN_REGEX = '/^::(?P<name>\w+)(?:\((?P<params>.+?)\))?$/m';
+
     public $yamlPath;
+
+    public $mixins = [];
 
     public static function registerFile($file)
     {
@@ -37,11 +41,15 @@ class Yaroute
         }
 
         $result = [
-            'prefix' => $matches['prefix'],
+            'prefix' => $matches['prefix']
         ];
 
         if (isset($matches['middleware'])) {
             $result['middleware'] = $matches['middleware'];
+        }
+
+        if (isset($matches['name'])) {
+            $result['as'] = $matches['name'];
         }
 
         return $result;
@@ -84,6 +92,69 @@ class Yaroute
         }
 
         return $result;
+    }
+
+    public function parseMixinString($string, $value)
+    {
+        if (!preg_match(self::MIXIN_REGEX, $string, $matches)) {
+            return null;
+        }
+
+        $name = $matches['name'];
+        $params = isset($matches['params']) ? $matches['params'] : null;
+
+        $params = preg_split('/\s*,\s*/', $params);
+        $paramsOrder = [];
+        $parametersWithValues = [];
+
+        foreach ($params as $param) {
+            $chunks = preg_split('/\s*=\s*/', $param);
+            switch (count($chunks)) {
+                case 1:
+                    list($paramName) = $chunks;
+                    $parametersWithValues[$paramName] = null;
+                    break;
+                case 2:
+                    list($paramName, $paramValue) = $chunks;
+                    $parametersWithValues[$paramName] = $paramValue;
+                    break;
+                default:
+                    throw new \Exception();
+            }
+            $paramsOrder[] = $paramName;
+        }
+
+        $callback = function (array $params) use ($parametersWithValues, $name, $value) {
+            $result = [];
+            foreach ($value as $url => $route) {
+                $closure = function ($match) use ($parametersWithValues, $name, $value, $params) {
+                    $name = $match['name'];
+
+                    return isset($params[$name]) ? $params[$name] : $parametersWithValues[$name];
+                };
+                $url = preg_replace_callback('/\$\{(?P<name>\w+)}/', $closure, $url);
+                if (is_string($route)) {
+                    $route = preg_replace_callback('/\$\{(?P<name>\w+)}/', $closure, $route);
+                } else {
+                    array_walk_recursive($route, function (&$value,&$key) use($closure) {
+                        $key = preg_replace_callback('/\$\{(?P<name>\w+)}/', $closure, $key);
+                        $value = preg_replace_callback('/\$\{(?P<name>\w+)}/', $closure, $value);
+                    });
+                    $this->register($route);
+                }
+
+                $result[$url] = $route;
+            }
+
+            return $result;
+        };
+
+        return [
+            'name'        => $name,
+            'params'      => $parametersWithValues,
+            'paramsOrder' => $paramsOrder,
+            'callback'    => $callback
+        ];
     }
 
     private function getWheres($url)
@@ -144,6 +215,10 @@ class Yaroute
 
         foreach ($data as $url => $value) {
 
+            if ($mixin = $this->parseMixinString($url, $value)) {
+                $this->mixins[$mixin['name']] = $mixin;
+            }
+
             if ($groupMatches = $this->parseGroupString($url)) {
                 $options = [];
                 if (isset($groupMatches['middleware'])) {
@@ -158,6 +233,26 @@ class Yaroute
                 Route::group($options, function () use ($value, $url) {
                     $this->register($value);
                 });
+            }
+
+            if ($url === '+') {
+                preg_match('/^(?P<name>\w+)\((?P<params>.+?)\)$/m', $value, $matches);
+                $name = $matches['name'];
+                $passedParams = preg_split('/\s*,\s*/', $matches['params']);
+                $mixin = $this->mixins[$name];
+                $paramsOrder = $mixin['paramsOrder'];
+                $paramsForCallback = [];
+
+                foreach ($paramsOrder as $index => $value) {
+                    if (!empty($passedParams[$index])) {
+                        $paramsForCallback[$value] = $passedParams[$index];
+                    } else {
+                        $paramsForCallback[$value] = $mixin['params'][$value];
+                    }
+                }
+
+                $result = $mixin['callback']($paramsForCallback);
+                $this->register($result);
             }
 
             if ($urlMatches = $this->parseRouteString($url)) {

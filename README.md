@@ -73,6 +73,21 @@ It'll be converted to this:
     });
 ```
 
+## Mixins
+
+```yaml
+::myResourceMixin(ControllerName, Alias = myResource):
+  GET / as ${Alias}.list: ${ControllerName}@list
+  ^/{id ~ \d+} as ${Alias}.element.:
+    GET / as show: ${ControllerName}@show
+    POST / as update: ${ControllerName}@update
+    PUT / as create: ${ControllerName}@create
+    DELETE / as delete: ${ControllerName}@destroy
+
+^/entity as entityResource:
+  +: myResourceMixin(MyEntityController, myEntity)
+```
+
 Also you can generate new YAML document with `$ php artisan yaroute:generate`.
 It will be printed to stdout and you can pipe it to needed file, e.g.:
 

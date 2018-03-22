@@ -29,10 +29,42 @@ PUT /saveAll uses auth: ArticleController@save
   ^/admin123/{section ~ \w+}:
     GET /index: AdminSectionController@index
 
-^/sub uses api:
+^/sub as sub1. uses api:
   - sub
 
 /api/model/export.{format ~ \w+}: ModelController@export
+
+^/included-route as parent:
+  GET /index/{id ~ \d+} as myIndex: IncludedController@index
+  +: sub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 _mixin1: &ResourceMixin
   ^/{id}:
