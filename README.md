@@ -76,7 +76,7 @@ It'll be converted to this:
 ## Mixins
 
 ```yaml
-::myResourceMixin(ControllerName, Alias = myResource):
++myResourceMixin(ControllerName, Alias = myResource):
   GET / as ${Alias}.list: ${ControllerName}@list
   /{id ~ \d+} as ${Alias}.element.:
     GET / as show: ${ControllerName}@show
@@ -88,7 +88,8 @@ It'll be converted to this:
   +: myResourceMixin(MyEntityController, myEntity)
 ```
 
-Also you can generate new YAML document with `$ php artisan yaroute:generate`.
+Also you can generate new YAML document (based on registered routes in app)
+ with `$ php artisan yaroute:generate`.
 It will be printed to stdout and you can pipe it to needed file, e.g.:
 
 `$ php artisan yaroute:generate > routes/api.yaml`
