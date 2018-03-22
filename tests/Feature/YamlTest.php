@@ -262,6 +262,18 @@ class YamlTest extends PackageTestCase
         $this->assertEquals('another', $entity3GetRoute->action['as']);
     }
 
+    public function testRegisterNull()
+    {
+        $this->assertFalse($this->yaml->register(null));
+    }
+
+    public function testRegisterMalformedData()
+    {
+        $this->assertFalse($this->yaml->register([
+            'GET /' => null
+        ]));
+    }
+
     public function testGenerateYamlFromRoutes()
     {
         Route::get('/', 'HomeController@index')->name('home');
@@ -276,6 +288,8 @@ class YamlTest extends PackageTestCase
                 Route::get('index', 'ArticleController@index');
                 Route::delete('', 'ArticleController@destroy');
             });
+
+            Route::get('/sandbox/{param}', 'SandboxController@index')->name('sandbox');
         });
         $yaml = $this->yaml->generateYamlFromRoutes();
         $expected = [
@@ -283,9 +297,11 @@ class YamlTest extends PackageTestCase
             'GET /api/entity as entity.list: Api\\EntityController@index',
             'GET /api/entity/{id ~ \d+} as entity.get: Api\\EntityController@get',
             'GET /api/article/{alias ~ \w+}/index: ArticleController@index',
+            'GET /api/sandbox/{param} as sandbox: SandboxController@index',
             'POST /api/entity as entity.save: Api\\EntityController@create',
             'DELETE /api/article/{alias ~ \w+}: ArticleController@destroy',
         ];
-        $this->assertEquals(join("\n", $expected), $yaml);
+        $joined = join("\n", $expected);
+        $this->assertEquals($joined, $yaml);
     }
 }

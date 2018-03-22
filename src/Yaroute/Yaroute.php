@@ -208,10 +208,10 @@ class Yaroute
         return $string;
     }
 
-    public function register($data)
+    public function register($data): bool
     {
         if (is_null($data))
-            return;
+            return false;
 
         if (!$this->isAssoc($data)) {
             foreach ($data as $file) {
@@ -309,13 +309,14 @@ class Yaroute
                     if (isset($urlMatches['middleware'])) {
                         $route->middleware(join(',', $urlMatches['middleware']));
                     }
-
                 } else {
-                    dump(12321312);
-                    die;
+                    dump(12312312312);
+                    return false;
                 }
             }
         }
+
+        return true;
     }
 
     public function registerFileImpl($file)
