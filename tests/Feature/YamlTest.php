@@ -226,9 +226,12 @@ class YamlTest extends PackageTestCase
     public function testGenerateYamlFromRoutes()
     {
         Route::get('/', 'HomeController@index')->name('home');
+
         Route::group(['prefix' => 'api'], function () {
             Route::get('/entity', 'Api\\EntityController@index')->name('entity.list');
+
             Route::post('/entity', 'Api\\EntityController@create')->name('entity.save');
+
             Route::get('/entity/{id}', 'Api\\EntityController@get')
                 ->name('entity.get')
                 ->where('id', '\d+');
@@ -240,6 +243,7 @@ class YamlTest extends PackageTestCase
 
             Route::get('/sandbox/{param}', 'SandboxController@index')->name('sandbox');
         });
+
         $yaml = $this->yaml->generateYamlFromRoutes();
         $expected = [
             'GET / as home: HomeController@index',
