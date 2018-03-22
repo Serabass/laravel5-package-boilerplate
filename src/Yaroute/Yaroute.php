@@ -443,6 +443,8 @@ class Yaroute
     }
 
     /**
+     * Generates a new YAML file based on all registered routes in app
+     *
      * @return string
      */
     public function generateYamlFromRoutes()
