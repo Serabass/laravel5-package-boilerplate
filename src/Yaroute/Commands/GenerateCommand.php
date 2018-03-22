@@ -3,7 +3,6 @@
 namespace Serabass\Yaroute\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Route;
 use Serabass\Yaroute\Yaroute;
 
 class GenerateCommand extends Command
@@ -25,7 +24,6 @@ class GenerateCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
      */
     public function handle()
     {

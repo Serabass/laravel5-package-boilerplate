@@ -3,12 +3,10 @@
 namespace Tests\Feature\Yaml;
 
 use Illuminate\Routing\RouteCollection;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Serabass\Yaroute\IncorrectDataException;
 use Serabass\Yaroute\Tests\PackageTestCase;
 use Serabass\Yaroute\Yaroute;
-use Symfony\Component\Console\Output\BufferedOutput;
 
 class YamlTest extends PackageTestCase
 {

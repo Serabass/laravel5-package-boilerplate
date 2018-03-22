@@ -5,27 +5,81 @@
 
 namespace Serabass\Yaroute;
 
+use Illuminate\Routing\RouteCollection;
 use Illuminate\Support\Facades\Route;
-use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\Yaml\Yaml;
 
 class Yaroute
 {
+    /**
+     * Regular expression to parse full method string
+     *
+     * @example GET / as home uses guest
+     * @example GET /info as info uses guest
+     * @example GET /cabinet as cabinet uses auth
+     * @example GET /logout uses auth
+     */
     const FULL_REGEX =
-        '%^(?:(?P<method>[\w|]+)\s+)(?P<path>/.*?)(?:\s+as\s+(?P<name>[\w.]+?))?(?:\s+uses\s+(?P<middleware>[\w;:\s]+))?$%sim';
+        '%^(?:(?P<method>[\w|]+)\s+)' .
+        '(?P<path>/.*?)' .
+        '(?:\s+as\s+(?P<name>[\w.]+?))?' .
+        '(?:\s+uses\s+(?P<middleware>[\w;:\s]+))?$%sim';
 
+    /**
+     * Regular expression to parse controller-action string
+     *
+     * @example HomeController@index
+     * @example HomeController@info
+     * @example UserController@cabinet
+     */
     const ACTION_REGEX = '/^(?P<controller>[\w\\\\]+)@(?P<action>\w+)$/sim';
 
-    const GROUP_REGEX = '%^(?P<prefix>/.*?)(?:\s+as\s+(?P<name>[\w.]+?))?(?:\s+uses\s+(?P<middleware>[\w;:\s]+))?$%sim';
+    /**
+     * Regular expression to parse group string
+     *
+     * @example /
+     * @example /api
+     * @example /user as user uses auth
+     * @example /logout uses auth
+     * @example /login uses guest
+     */
+    const GROUP_REGEX =
+        '%^(?P<prefix>/.*?)' .
+        '(?:\s+as\s+(?P<name>[\w.]+?))?' .
+        '(?:\s+uses\s+(?P<middleware>[\w;:\s]+))?$%sim';
 
-    const PARAM_REGEX = '/\{(?P<param>[\w?]+)(?:\s+~\s+(?P<regex>.+?))?\}/sim';
+    /**
+     * Regular expression to parse uri parameter string
+     *
+     * @example {id}
+     * @example {id ~ \d+}
+     * @example {alias ~ [\w-]}
+     * @example {path ~ .+}
+     */
+    const PARAM_REGEX =
+        '/\{(?P<param>[\w?]+)' .
+        '(?:\s+~\s+(?P<regex>.+?))?\}/sim';
 
+    /**
+     * Regular expression to parse uri parameter string
+     *
+     * @example +myMixinName
+     * @example +myMixinName(Param)
+     * @example +myMixinName(Param1, Param2)
+     * @example +myMixinName(Param, OptionalParam = DefaultValue)
+     */
     const MIXIN_REGEX = '/^\+(?P<name>\w+)(?:\((?P<params>.+?)\))?$/m';
 
     public $yamlPath;
 
     public $mixins = [];
 
+    /**
+     * @param $file
+     *
+     * @return Yaroute
+     * @throws IncorrectDataException
+     */
     public static function registerFile($file)
     {
         $yaml = new Yaroute();
@@ -35,6 +89,11 @@ class Yaroute
         return $yaml;
     }
 
+    /**
+     * @param $string
+     *
+     * @return array|null
+     */
     public function parseGroupString($string)
     {
         if (!preg_match(self::GROUP_REGEX, $string, $matches)) {
@@ -56,6 +115,11 @@ class Yaroute
         return $result;
     }
 
+    /**
+     * @param string $string
+     *
+     * @return array|null
+     */
     public function parseActionString(string $string)
     {
         if (!preg_match(self::ACTION_REGEX, $string, $matches)) {
@@ -68,6 +132,11 @@ class Yaroute
         ];
     }
 
+    /**
+     * @param $string
+     *
+     * @return array|null
+     */
     public function parseRouteString($string)
     {
         if (!preg_match(self::FULL_REGEX, $string, $matches)) {
@@ -80,8 +149,6 @@ class Yaroute
 
         if (!empty($matches['method'])) {
             $result['method'] = preg_split('/\s*\|\s*/', $matches['method']);
-        } else {
-            $result['method'] = ['GET']; // or ALL
         }
 
         if (!empty($matches['name'])) {
@@ -131,7 +198,6 @@ class Yaroute
             }
             $paramsOrder[] = $paramName;
         }
-
         $callback = function (array $params) use ($parametersWithValues, $name, $value) {
             $result = [];
             foreach ($value as $url => $route) {
@@ -165,6 +231,11 @@ class Yaroute
         ];
     }
 
+    /**
+     * @param $url
+     *
+     * @return array
+     */
     private function getWheres($url)
     {
         $wheres = [];
@@ -186,6 +257,11 @@ class Yaroute
         ];
     }
 
+    /**
+     * @param array $arr
+     *
+     * @return bool
+     */
     private function isAssoc(array $arr)
     {
         if ([] === $arr) return false;
@@ -193,6 +269,11 @@ class Yaroute
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
 
+    /**
+     * @param $file
+     *
+     * @return mixed
+     */
     public function parseFile($file)
     {
         $this->yamlPath = $file;
@@ -201,6 +282,11 @@ class Yaroute
         return Yaml::parse($contents);
     }
 
+    /**
+     * @param $string
+     *
+     * @return string
+     */
     private function prepareFileName($string)
     {
         if (!ends_with($string, '.yaml'))
@@ -209,7 +295,13 @@ class Yaroute
         return $string;
     }
 
-    private function useMixin($value) {
+    /**
+     * @param $value
+     *
+     * @throws IncorrectDataException
+     */
+    private function useMixin($value)
+    {
         preg_match('/^(?P<name>\w+)(?:\((?P<params>.*?)\))?$/m', $value, $matches);
         $name = $matches['name'];
         $passedParams = preg_split('/\s*,\s*/', $matches['params']);
@@ -229,6 +321,12 @@ class Yaroute
         $this->register($result);
     }
 
+    /**
+     * @param $data
+     *
+     * @return bool
+     * @throws IncorrectDataException
+     */
     public function register($data): bool
     {
         if (is_null($data))
@@ -313,6 +411,9 @@ class Yaroute
                         $controller = $value['controller'];
                     }
 
+                    /**
+                     * @var $route Route
+                     */
                     $route = Route::$method($urlMatches['path'], $controller . '@' . $action);
                     if (isset($urlMatches['name'])) {
                         $route->name($urlMatches['name']);
@@ -329,6 +430,11 @@ class Yaroute
         return true;
     }
 
+    /**
+     * @param $file
+     *
+     * @throws IncorrectDataException
+     */
     public function registerFileImpl($file)
     {
         $file = $this->prepareFileName($file);
@@ -336,9 +442,16 @@ class Yaroute
         $this->register($options);
     }
 
+    /**
+     * @return string
+     */
     public function generateYamlFromRoutes()
     {
         $methods = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'];
+
+        /**
+         * @var $routes RouteCollection
+         */
         $routes = Route::getRoutes();
         $result = [];
 
