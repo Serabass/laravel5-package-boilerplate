@@ -1,6 +1,6 @@
 GET /{path? ~ ^(?!admin).*} as home uses guest: HomeController@index
 
-GET /checkToken2 as checkToken2 uses api,guest: UserController@checkToken2
+GET /checkToken2 as checkToken2 uses api;guest: UserController@checkToken2
 
 GET /checkToken3 as checkToken3:
   controller: UserController
@@ -36,8 +36,6 @@ PUT /saveAll uses auth: ArticleController@save
 
 ^/included-route as parent:
   GET /index/{id ~ \d+} as myIndex: IncludedController@index
-  +: sub
-
 
 
 

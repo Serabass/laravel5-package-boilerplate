@@ -11,11 +11,11 @@ use Symfony\Component\Yaml\Yaml;
 class Yaroute
 {
     const FULL_REGEX =
-        '%^(?:(?P<method>[\w|]+)\s+)?(?P<path>/.*?)(?:\s+as\s+(?P<name>[\w.]+?))?(?:\s+uses\s+(?P<middleware>[\w,\s]+))?$%sim';
+        '%^(?:(?P<method>[\w|]+)\s+)?(?P<path>/.*?)(?:\s+as\s+(?P<name>[\w.]+?))?(?:\s+uses\s+(?P<middleware>[\w;\s]+))?$%sim';
 
     const ACTION_REGEX = '/^(?P<controller>[\w\\\\]+)@(?P<action>\w+)$/sim';
 
-    const GROUP_REGEX = '%^\^(?P<prefix>/.+?)(?:\s+as\s+(?P<name>[\w.]+?))?(?:\s+uses\s+(?P<middleware>[\w,:\s]+))?$%sim';
+    const GROUP_REGEX = '%^\^(?P<prefix>/.+?)(?:\s+as\s+(?P<name>[\w.]+?))?(?:\s+uses\s+(?P<middleware>[\w;:\s]+))?$%sim';
 
     const PARAM_REGEX = '/\{(?P<param>[\w?]+)(?:\s+~\s+(?P<regex>.+?))?\}/sim';
 
@@ -88,7 +88,7 @@ class Yaroute
         }
 
         if (!empty($matches['middleware'])) {
-            $result['middleware'] = preg_split('/\s*,\s*/', $matches['middleware']);
+            $result['middleware'] = preg_split('/\s*;\s*/', $matches['middleware']);
         }
 
         return $result;
@@ -243,11 +243,11 @@ class Yaroute
                 $paramsOrder = $mixin['paramsOrder'];
                 $paramsForCallback = [];
 
-                foreach ($paramsOrder as $index => $value) {
+                foreach ($paramsOrder as $index => $paramValue) {
                     if (!empty($passedParams[$index])) {
-                        $paramsForCallback[$value] = $passedParams[$index];
+                        $paramsForCallback[$paramValue] = $passedParams[$index];
                     } else {
-                        $paramsForCallback[$value] = $mixin['params'][$value];
+                        $paramsForCallback[$paramValue] = $mixin['params'][$paramValue];
                     }
                 }
 

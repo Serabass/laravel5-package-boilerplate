@@ -7,10 +7,6 @@
     PUT / as create: ${ControllerName}@create
     DELETE / as delete: ${ControllerName}@destroy
 
-^/entity as entityResource:
-  +: myResourceMixin(MyEntityController, myEntity)
-
-
 ::myResourceMixin2(ControllerName, Alias):
   GET / as ${Alias}.list: ${ControllerName}@list
   ^/{id ~ \d+} as ${Alias}.element.:
@@ -19,6 +15,12 @@
     PUT / as create: ${ControllerName}@create
     DELETE / as delete: ${ControllerName}@destroy
 
+^/entity as entityResource:
+  +: myResourceMixin(MyEntityController, myEntity)
+
 ^/entity2 as entity2Resource:
   +: myResourceMixin2(MyEntityController)
 
+^/entity3 as entity3Resource:
+  +: myResourceMixin2(MyEntityController)
+  GET /anotherRoute as another: MyEntityController@anotherAction

@@ -22,7 +22,7 @@ class YamlTest extends PackageTestCase
 
     public function testParseRouteString()
     {
-        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken2 as checkToken2 uses api,guest'), [
+        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken2 as checkToken2 uses api;guest'), [
             'method'     => ['GET'],
             'path'       => '/checkToken2',
             'name'       => 'checkToken2',
@@ -53,14 +53,14 @@ class YamlTest extends PackageTestCase
             'middleware' => ['api'],
         ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('GET    /checkToken5    as    checkToken5    uses api,    auth'), [
+        $this->assertEquals($this->yaml->parseRouteString('GET    /checkToken5    as    checkToken5    uses api;    auth'), [
             'method'     => ['GET'],
             'path'       => '/checkToken5',
             'name'       => 'checkToken5',
             'middleware' => ['api', 'auth'],
         ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('GET|POST|PUT /checkToken6 uses api,auth'), [
+        $this->assertEquals($this->yaml->parseRouteString('GET|POST|PUT /checkToken6 uses api;auth'), [
             'method'     => ['GET', 'POST', 'PUT'],
             'path'       => '/checkToken6',
             'middleware' => ['api', 'auth'],
@@ -233,5 +233,30 @@ class YamlTest extends PackageTestCase
         $this->assertEquals('create', $entityCreateRoute->action['as']);
 
 
+
+        $this->assertArrayHasKey('entity3', $GETRoutes);
+        $entityListRoute = $GETRoutes['entity3'];
+        $this->assertEquals('MyEntityController@list', $entityListRoute->action['controller']);
+        $this->assertEquals('.list', $entityListRoute->action['as']);
+
+        $this->assertArrayHasKey('entity3/{id}', $GETRoutes);
+        $entityElementRoute = $GETRoutes['entity3/{id}'];
+        $this->assertEquals('show', $entityElementRoute->action['as']);
+
+        $this->assertArrayHasKey('entity3/{id}', $POSTRoutes);
+        $entityUpdateRoute = $POSTRoutes['entity3/{id}'];
+        $this->assertEquals('update', $entityUpdateRoute->action['as']);
+
+        $this->assertArrayHasKey('entity3/{id}', $PUTRoutes);
+        $entityCreateRoute = $PUTRoutes['entity3/{id}'];
+        $this->assertEquals('create', $entityCreateRoute->action['as']);
+
+        $this->assertArrayHasKey('entity3/{id}', $PUTRoutes);
+        $entityCreateRoute = $PUTRoutes['entity3/{id}'];
+        $this->assertEquals('create', $entityCreateRoute->action['as']);
+
+        $this->assertArrayHasKey('entity3/anotherRoute', $GETRoutes);
+        $entity3GetRoute = $GETRoutes['entity3/anotherRoute'];
+        $this->assertEquals('another', $entity3GetRoute->action['as']);
     }
 }
