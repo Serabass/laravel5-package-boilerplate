@@ -52,7 +52,25 @@ Simple group config:
     GET /entity/{id ~ \d+}: AdminController@entity
     ^/subroute:
       GET /entity/{id ~ \d+}: AdminController@entity
-      GET /data/{alias ~ .+}: AdminController@entity
+      GET /data/{alias ~ .+}: AdminController@getData
+```
+
+It'll be converted to this:
+```php
+    Route::group(['prefix' => 'api', 'uses' => 'api'], function () {
+        Route::get('entity', 'EntityController@list');
+        Route::get('entity/{id}', 'EntityController@get')->where('id', '\d+');
+        Route::post('entity/{id}', 'EntityController@save')->where('id', '\d+');
+        Route::get('entity/{id}/getComments', 'EntityController@getComments')->where('id', '\d+');
+        Route::group('admin', function () {
+            Route::get('index', 'AdminController@index');
+            Route::get('entity/{id}', 'AdminController@entity')->where('id', '\d+');
+            Route::group('subroute', function () {
+                Route::get('entity/{id}', 'AdminController@entity')->where('id', '\d+');
+                Route::get('data/{alias}', 'AdminController@getData')->where('alias', '.+');
+            });
+        });
+    });
 ```
 
 Also you can generate new YAML document with `$ php artisan yaroute:generate`.
