@@ -16,7 +16,7 @@ class Yaroute
 
     const ACTION_REGEX = '/^(?P<controller>[\w\\\\]+)@(?P<action>\w+)$/sim';
 
-    const GROUP_REGEX = '%^\^(?P<prefix>/.+?)(?:\s+as\s+(?P<name>[\w.]+?))?(?:\s+uses\s+(?P<middleware>[\w;:\s]+))?$%sim';
+    const GROUP_REGEX = '%^\^(?P<prefix>/.*?)(?:\s+as\s+(?P<name>[\w.]+?))?(?:\s+uses\s+(?P<middleware>[\w;:\s]+))?$%sim';
 
     const PARAM_REGEX = '/\{(?P<param>[\w?]+)(?:\s+~\s+(?P<regex>.+?))?\}/sim';
 
