@@ -11,7 +11,7 @@ POST /save uses auth: ArticleController@save
 
 PUT /saveAll uses auth: ArticleController@save
 
-^/api uses api:
+/api uses api:
   GET /entity: EntityController@list
   GET /entity/{id ~ \d+}: EntityController@get
   POST /entity/{id ~ \d+}: EntityController@save
@@ -19,22 +19,22 @@ PUT /saveAll uses auth: ArticleController@save
   GET /entity/{id}/getComments:
     action: EntityController@getComments
 
-  ^/admin:
+  /admin:
     GET /index: AdminController@index
     GET /entity/{id ~ \d+}: AdminController@entity
-    ^/subroute3:
+    /subroute3:
       GET /entity/{id ~ \d+}: AdminController@entity
       GET /data/{alias ~ .+}: AdminController@entity
 
-  ^/admin123/{section ~ \w+}:
+  /admin123/{section ~ \w+}:
     GET /index: AdminSectionController@index
 
-^/sub as sub1. uses api:
+/sub as sub1. uses api:
   - sub
 
-/api/model/export.{format ~ \w+}: ModelController@export
+GET /api/model/export.{format ~ \w+}: ModelController@export
 
-^/included-route as parent:
+/included-route as parent:
   GET /index/{id ~ \d+} as myIndex: IncludedController@index
 
 

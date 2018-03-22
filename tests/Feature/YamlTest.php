@@ -76,7 +76,7 @@ class YamlTest extends PackageTestCase
                 'middleware' => ['api', 'auth'],
             ]);
 
-        $this->assertEquals($this->yaml->parseRouteString('/checkToken7 as checkToken7'),
+        $this->assertEquals($this->yaml->parseRouteString('GET /checkToken7 as checkToken7'),
             [
                 'method' => ['GET'],
                 'path'   => '/checkToken7',
@@ -84,7 +84,7 @@ class YamlTest extends PackageTestCase
             ]);
 
         $this->assertException(function () {
-            $this->yaml->parseMixinString('::myResourceMixin2(ControllerName, Alias = = = =)', null);
+            $this->yaml->parseMixinString('+myResourceMixin2(ControllerName, Alias = = = =)', null);
         }, IncorrectDataException::class);
 
         $this->assertNull($this->yaml->parseRouteString('malformed string'));
@@ -92,14 +92,14 @@ class YamlTest extends PackageTestCase
 
     public function testParseGroupString()
     {
-        $this->assertEquals($this->yaml->parseGroupString('^/ uses auth:api'),
+        $this->assertEquals($this->yaml->parseGroupString('/ uses auth:api'),
             [
                 'prefix' => '/',
                 'middleware'   => ['auth:api'],
                 'as' => ''
             ]);
 
-        $this->assertEquals($this->yaml->parseGroupString('^/{id} as name uses auth:api'),
+        $this->assertEquals($this->yaml->parseGroupString('/{id} as name uses auth:api'),
             [
                 'prefix' => '/{id}',
                 'middleware'   => ['auth:api'],

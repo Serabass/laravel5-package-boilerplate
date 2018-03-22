@@ -1,5 +1,5 @@
 
-::myResourceMixin(ControllerName, Alias = myResource):
++myResourceMixin(ControllerName, Alias = myResource):
   GET / as ${Alias}.list: ${ControllerName}@list
   ^/{id ~ \d+} as ${Alias}.element.:
     GET / as show: ${ControllerName}@show
@@ -7,7 +7,7 @@
     PUT / as create: ${ControllerName}@create
     DELETE / as delete: ${ControllerName}@destroy
 
-::myResourceMixin2(ControllerName, Alias):
++myResourceMixin2(ControllerName, Alias):
   GET / as ${Alias}.list: ${ControllerName}@list
   ^/{id ~ \d+} as ${Alias}.element.:
     GET / as show: ${ControllerName}@show
@@ -15,12 +15,12 @@
     PUT / as create: ${ControllerName}@create
     DELETE / as delete: ${ControllerName}@destroy
 
-^/entity as entityResource:
+/entity as entityResource:
   +: myResourceMixin(MyEntityController, myEntity)
 
-^/entity2 as entity2Resource:
+/entity2 as entity2Resource:
   +: myResourceMixin2(MyEntityController)
 
-^/entity3 as entity3Resource:
+/entity3 as entity3Resource:
   +: myResourceMixin2(MyEntityController)
   GET /anotherRoute as another: MyEntityController@anotherAction
