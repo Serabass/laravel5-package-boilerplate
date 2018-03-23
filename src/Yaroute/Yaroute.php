@@ -497,7 +497,7 @@ class Yaroute
      */
     public function generateYamlFromRoutes()
     {
-        $methods = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'];
+        $methods = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'];
 
         /**
          * @var $routes RouteCollection
@@ -509,7 +509,15 @@ class Yaroute
             $data = $routes->get($method);
 
             foreach ($data as $url => $options) {
-                $controller = $options->action['controller'];
+                if (!isset($options->action['controller'])) {
+                    if (isset($options->action['uses'])) {
+                        echo "Warning: Please do not use lambda functions in routes! Replace all ::CALLABLE:: tags to Controller@action notation";
+                        $controller = "::CALLABLE::";
+                    }
+                } else {
+                    $controller = $options->action['controller'];
+                }
+
                 $where = $options->wheres;
 
                 $uri = preg_replace_callback('/\{(?P<param>[\w]+)\??\}/m', function ($m) use ($url, $where) {
