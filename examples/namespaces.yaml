@@ -1,0 +1,4 @@
+/ as api-group @ Api:
+  GET /new as .new: MyController@newEntry
+
+GET /myRoute as my @ Api: MyController@myAction

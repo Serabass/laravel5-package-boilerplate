@@ -22,8 +22,9 @@ class Yaroute
     const FULL_REGEX =
         '%^(?:(?P<method>[\w|]+)\s+)' .
         '(?P<path>/.*?)' .
-        '(?:\s+as\s+(?P<name>[\w.]+?))?' .
-        '(?:\s+uses\s+(?P<middleware>[\w;:\s]+))?$%sim';
+        '(?:\s+as\s+(?P<name>[\w.-]+?))?' .
+        '(?:\s+uses\s+(?P<middleware>[\w;:\s]+))?' .
+        '$%sim';
 
     /**
      * Regular expression to parse controller-action string
@@ -45,8 +46,10 @@ class Yaroute
      */
     const GROUP_REGEX =
         '%^(?P<prefix>/.*?)' .
-        '(?:\s+as\s+(?P<name>[\w.]+?))?' .
-        '(?:\s+uses\s+(?P<middleware>[\w;:\s]+))?$%sim';
+        '(?:\s+as\s+(?P<name>[\w.-]+?))?' .
+        '(?:\s+uses\s+(?P<middleware>[\w;:\s]+))?' .
+        '(?:\s+@\s+(?P<namespace>[\w;:\s]+))?' .
+        '$%sim';
 
     /**
      * Regular expression to parse uri parameter string
@@ -94,6 +97,9 @@ class Yaroute
      */
     public static function registerFile($file, Yaroute $yaml = null)
     {
+        if (app()->routesAreCached())
+            return;
+
         $yaml = !is_null($yaml) ? $yaml : new Yaroute();
         $file = $yaml->prepareFileName($file);
         $yaml->registerFileImpl($file);
@@ -122,6 +128,10 @@ class Yaroute
 
         if (isset($matches['name'])) {
             $result['as'] = $matches['name'];
+        }
+
+        if (isset($matches['namespace'])) {
+            $result['namespace'] = $matches['namespace'];
         }
 
         return $result;
@@ -402,6 +412,10 @@ class Yaroute
                     $options['as'] = $groupMatches['as'];
                 }
 
+                if (isset($groupMatches['namespace'])) {
+                    $options['namespace'] = $groupMatches['namespace'];
+                }
+
                 Route::group($options, function () use ($value, $key) {
                     $this->register($value);
                 });
@@ -431,6 +445,7 @@ class Yaroute
                              * @var $route Route
                              */
                             $route = Route::$method($options['path'], $value);
+
                             if (isset($urlMatches['name'])) {
                                 $route->name($urlMatches['name']);
                             }
