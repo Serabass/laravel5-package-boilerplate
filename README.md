@@ -106,10 +106,10 @@ You can create predefined names for RegExps that using in uri params.
 It's simple to do. See the example below:
 
 ```yaml
-~hex: '[a-f0-9]+'
-~urlAlias: '[A-Z-]+'
+~hex: `'[a-f0-9]+'`
+~urlAlias: `'[A-Z-]+'`
 ```
-
+Note: all regexes must be quoted because yaml-parser recognizes `[...]` as array
 And if you want to use it in route you can write as:
 ```yaml
 GET /entity/{id ~hex} as entity: EntityController@show
@@ -120,10 +120,10 @@ the value will passed as plain regex `/numeric/`
 
 Yaroute has few prefedined aliases:
 
-* **numeric**: \d+
-* **hex**: [\da-fA-F]+
-* **alias**: [\w-]+
-* **boolean**: [01]
+* **numeric**: `\d+`
+* **hex**: `[\da-fA-F]+`
+* **alias**: `[\w-]+`
+* **boolean**: `[01]`
 
 # Generating YAML
 
