@@ -4,8 +4,10 @@
 
   /{id ~numeric}:
     GET / as .item      : ${Controller}@item
-    POST / as .update   : ${Controller}@update
-    DELETE / as .delete : ${Controller}@delete
+
+    / uses auth:api:
+      POST / as .update   : ${Controller}@update
+      DELETE / as .delete : ${Controller}@delete
 
 +commentableResource(Controller):
   +: resource(${Controller})
