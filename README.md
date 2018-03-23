@@ -88,6 +88,29 @@ It'll be converted to this:
   +: myResourceMixin(MyEntityController, myEntity)
 ```
 
+# Regular Expressions presets
+
+You can create predefined names for RegExps that using in uri params.
+It's simple to do. See the example below:
+
+```yaml
+~myTemplate: '[]+'
+~urlAlias: '[A-Z-]+'
+```
+
+And if you want to use it in route you can write as:
+```yaml
+GET /entity/{id ~numeric} as entity: EntityController@show
+```
+
+Please note that there is no space. It's important. If you placed a space char there, 
+the value will passed as plain regex `/numeric/`
+
+Yaroute has few prefedined aliases:
+
+* **numeric**: \d+
+* **alias**: [\w-]+
+
 Also you can generate new YAML document (based on registered routes in app)
  with `$ php artisan yaroute:generate`.
 It will be printed to stdout and you can pipe it to needed file, e.g.:
