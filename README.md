@@ -39,6 +39,8 @@ This simple config creates a route with url `/`, named `home`, that uses `guest`
 
 This simple config creates a group that uses `api` middleware and contains `/entity` route
 
+You can see all examples in [Examples page](./examples).
+
 # Usage
 
 ```php
@@ -80,6 +82,8 @@ It'll be converted to this:
         });
     });
 ```
+
+You can see all examples in [Examples page](./examples).
 
 ## Mixins
 

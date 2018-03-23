@@ -119,9 +119,9 @@ class YamlTest extends PackageTestCase
 
     }
 
-    public function testExample()
+    public function testSimpleRoutes()
     {
-        $this->yaml->registerFile(__DIR__ . '/yaml/routes1.yaml');
+        $this->yaml->registerFile(__DIR__ . '/../../examples/routes.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');

@@ -10,7 +10,7 @@ class NamedGroupsTest extends PackageTestCase
 {
     public function testCreateNamedNestedGroups()
     {
-        $this->yaml->registerFile(__DIR__ . '/yaml/named-groups.yaml');
+        $this->yaml->registerFile(__DIR__ . '/../../examples/named-groups.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');

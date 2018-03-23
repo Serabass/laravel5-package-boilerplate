@@ -10,7 +10,7 @@ class MixinTest extends PackageTestCase
 {
     public function testMixin()
     {
-        $this->yaml->registerFile(__DIR__ . '/yaml/mixins.yaml');
+        $this->yaml->registerFile(__DIR__ . '/../../examples/mixins.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');
@@ -86,7 +86,7 @@ class MixinTest extends PackageTestCase
 
     public function testSimpleMixins()
     {
-        $this->yaml->registerFile(__DIR__ . '/yaml/mixins.yaml');
+        $this->yaml->registerFile(__DIR__ . '/../../examples/mixins.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');
@@ -118,7 +118,7 @@ class MixinTest extends PackageTestCase
 
     public function testSimpleMixinsWithImports()
     {
-        $this->yaml->registerFile(__DIR__ . '/yaml/mixins.yaml');
+        $this->yaml->registerFile(__DIR__ . '/../../examples/mixins.yaml');
         $routes = Route::getRoutes();
 
         $this->assertTrue($routes instanceof RouteCollection);

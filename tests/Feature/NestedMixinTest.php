@@ -10,7 +10,7 @@ class NestedMixinTest extends PackageTestCase
 {
     public function testNestedMixinPoint()
     {
-        $this->yaml->registerFile(__DIR__ . '/yaml/nested-mixins.yaml');
+        $this->yaml->registerFile(__DIR__ . '/../../examples/nested-mixins.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');
@@ -80,7 +80,7 @@ class NestedMixinTest extends PackageTestCase
 
     public function testNestedMixinGood()
     {
-        $this->yaml->registerFile(__DIR__ . '/yaml/nested-mixins.yaml');
+        $this->yaml->registerFile(__DIR__ . '/../../examples/nested-mixins.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');
