@@ -144,6 +144,7 @@ class YamlTest extends PackageTestCase
         $this->assertEquals(['GET', 'HEAD'], $GETRoutes['checkToken3']->methods);
         $this->assertEquals('UserController@checkToken3', $GETRoutes['checkToken3']->action['controller']);
         $this->assertEquals('checkToken3', $GETRoutes['checkToken3']->action['as']);
+        $this->assertEquals(['api,guest'], $GETRoutes['checkToken3']->action['middleware']);
 
 
         $POSTRoutes = $routes->get('POST');

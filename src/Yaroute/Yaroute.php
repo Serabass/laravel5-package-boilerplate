@@ -427,6 +427,9 @@ class Yaroute
                     if (isset($urlMatches['middleware'])) {
                         $route->middleware(join(',', $urlMatches['middleware']));
                     }
+                    if (isset($value['middleware'])) {
+                        $route->middleware($value['middleware']);
+                    }
                 } else {
                     return false;
                 }
