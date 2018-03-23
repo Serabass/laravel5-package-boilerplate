@@ -1,5 +1,13 @@
 **Yaroute** is a simple route-organizer that uses YAML to register routes in Laravel.
 
+1. [Installation](#installation)
+2. [Docs](#docs)
+3. [Examples](#examples)
+4. [Usage](#usage)
+5. [Mixins](#mixins)
+6. [Regular Expressions presets](#regular-expressions-presets)
+7. [Generating YAML](#generating-yaml)
+
 # Installation
 ` $ composer require serabass/yaroute `
 
@@ -110,6 +118,8 @@ Yaroute has few prefedined aliases:
 
 * **numeric**: \d+
 * **alias**: [\w-]+
+
+# Generating YAML
 
 Also you can generate new YAML document (based on registered routes in app)
  with `$ php artisan yaroute:generate`.
