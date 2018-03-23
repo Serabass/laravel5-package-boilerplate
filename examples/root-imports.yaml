@@ -1,0 +1,5 @@
+# Imports must me like mixins but started with any char, e.g. $
+
+/post as post:
+  GET /{id} as .item: PostController@item
+  +: ~import imports/import1.yaml

@@ -206,6 +206,7 @@ class Yaroute
      *
      * @return array|null
      * @throws IncorrectDataException
+     * @throws RegExpAliasAlreadySetException
      */
     public function parseMixinString($string, $value)
     {
@@ -345,23 +346,34 @@ class Yaroute
      */
     private function useMixin($value)
     {
-        preg_match('/^(?P<name>\w+)(?:\((?P<params>.*?)\))?$/m', $value, $matches);
-        $name = $matches['name'];
-        $passedParams = preg_split('/\s*,\s*/', $matches['params']);
-        $mixin = $this->mixins[$name];
-        $paramsOrder = $mixin['paramsOrder'];
-        $paramsForCallback = [];
+        $LOCAL_MIXIN_REGEX = '/^(?P<name>\w+)(?:\((?P<params>.*?)\))?$/m';
+        $IMPORT_REGEX = '%^~import\s+(?P<file>[\w/\\\\.]+)$%simx';
 
-        foreach ($paramsOrder as $index => $paramValue) {
-            if (!empty($passedParams[$index])) {
-                $paramsForCallback[$paramValue] = $passedParams[$index];
-            } else {
-                $paramsForCallback[$paramValue] = $mixin['params'][$paramValue];
+        if (preg_match($LOCAL_MIXIN_REGEX, $value, $matches)) {
+            $name = $matches['name'];
+            $passedParams = preg_split('/\s*,\s*/', $matches['params']);
+            $mixin = $this->mixins[$name];
+            $paramsOrder = $mixin['paramsOrder'];
+            $paramsForCallback = [];
+
+            foreach ($paramsOrder as $index => $paramValue) {
+                if (!empty($passedParams[$index])) {
+                    $paramsForCallback[$paramValue] = $passedParams[$index];
+                } else {
+                    $paramsForCallback[$paramValue] = $mixin['params'][$paramValue];
+                }
             }
+
+            $result = $mixin['callback']($paramsForCallback);
+            $this->register($result);
         }
 
-        $result = $mixin['callback']($paramsForCallback);
-        $this->register($result);
+        if (preg_match($IMPORT_REGEX, $value, $matches)) {
+            $file = $matches['file'];
+
+            $dir = dirname($this->yamlPath);
+            self::registerFile($dir . '/' . $file, $this);
+        }
     }
 
     /**
@@ -375,13 +387,6 @@ class Yaroute
     {
         if (is_null($data))
             return false;
-
-        if (!$this->isAssoc($data)) {
-            foreach ($data as $file) {
-                $dir = dirname($this->yamlPath);
-                self::registerFile($dir . '/' . $file, $this);
-            }
-        }
 
         foreach ($data as $key => $value) {
 

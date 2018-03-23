@@ -1,0 +1,2 @@
+/good as .good:
+  GET /{id} as .item: GoodController@item

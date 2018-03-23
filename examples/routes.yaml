@@ -30,7 +30,7 @@ PUT /saveAll uses auth: ArticleController@save
     GET /index: AdminSectionController@index
 
 /sub as sub1 uses api:
-  - sub.yaml
+  +: ~import sub.yaml
 
 GET /api/model/export.{format ~ \w+}: ModelController@export
 
