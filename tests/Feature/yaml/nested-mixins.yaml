@@ -9,17 +9,17 @@
 
 +commentableResource(Controller):
   +: resource(${Controller})
+
   /{id ~numeric}:
     GET  /comments    as .comments                                 : ${Controller}@getComments
+
     / uses auth:api:
       PUT /addComment as .postComment                              : ${Controller}@addComment
       POST /updateComment/{commentId ~numeric} as .updateComment   : ${Controller}@updateComment
       DELETE /deleteComment/{commentId ~numeric} as .deleteComment : ${Controller}@deleteComment
 
 /point as point:
-  +:
-    - commentableResource(PointController)
+  +: commentableResource(PointController)
 
 /good as good:
-  +:
-    - commentableResource(GoodController)
+  +: commentableResource(GoodController)
