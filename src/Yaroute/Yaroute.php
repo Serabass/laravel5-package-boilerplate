@@ -78,7 +78,9 @@ class Yaroute
 
     public $regexes = [
         'numeric' => '\d+',
+        'hex' => '[\da-fA-F]+',
         'alias' => '[\w-]+',
+        'boolean' => '[01]',
     ];
 
     /**

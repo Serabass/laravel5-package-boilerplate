@@ -117,7 +117,9 @@ the value will passed as plain regex `/numeric/`
 Yaroute has few prefedined aliases:
 
 * **numeric**: \d+
+* **hex**: [\da-fA-F]+
 * **alias**: [\w-]+
+* **boolean**: [01]
 
 # Generating YAML
 
