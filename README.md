@@ -43,6 +43,9 @@ You can see all examples in [Examples directory](./examples).
 
 # Usage
 
+1. Create your `.yaml` file, e.g. `api.yaml` in any directory (e.g. `routes`)
+2. Write just one line in your `routes/web.php` or `routes/api.php` and you can register all routes in your `.yaml`
+
 ```php
 \Serabass\Yaroute\Yaroute::registerFile(__DIR__ . '/api.yaml');
 ```
