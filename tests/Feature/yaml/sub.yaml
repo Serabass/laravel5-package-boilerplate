@@ -7,4 +7,4 @@ GET /index2 as .subindex2: SubController@index2
     action: index
 
   /:
-    - sub2.yaml
+    - sub2
