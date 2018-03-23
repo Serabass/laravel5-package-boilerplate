@@ -1,0 +1,8 @@
+/ as entity:
+  GET /entity/list as .list: EntityController@list
+  GET /entity/{id} as .item: EntityController@item
+
+/ as post:
+  GET /post/list as .list: PostController@list
+  GET /post/{id} as .item: PostController@item
+

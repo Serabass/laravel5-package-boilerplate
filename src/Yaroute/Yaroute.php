@@ -263,12 +263,10 @@ class Yaroute
             $param = $matches['param'];
             $paramNoQ = str_replace('?', '', $param);
 
-
-
             if (isset($matches['regex'])) {
                 $regex = $matches['regex'];
-                if (preg_match('/^\s/', $regex)) {
-                    $wheres[$paramNoQ] = $regex;
+                if (preg_match('/^\s+/', $regex)) {
+                    $wheres[$paramNoQ] = ltrim($regex);
                 } else {
                     $wheres[$paramNoQ] = $this->regexes[$regex];
                 }
