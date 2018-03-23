@@ -43,41 +43,41 @@ class MixinTest extends PackageTestCase
         $this->assertArrayHasKey('entity2', $GETRoutes);
         $entityListRoute = $GETRoutes['entity2'];
         $this->assertEquals('MyEntityController@list', $entityListRoute->action['controller']);
-        $this->assertEquals('entity2Resource.myAlias.list', $entityListRoute->action['as']);
+        $this->assertEquals('entity2Resource.list', $entityListRoute->action['as']);
 
         $this->assertArrayHasKey('entity2/{id}', $GETRoutes);
         $entityElementRoute = $GETRoutes['entity2/{id}'];
-        $this->assertEquals('entity2Resource.myAlias.element.show', $entityElementRoute->action['as']);
+        $this->assertEquals('entity2Resource.element.show', $entityElementRoute->action['as']);
 
         $this->assertArrayHasKey('entity2/{id}', $POSTRoutes);
         $entityUpdateRoute = $POSTRoutes['entity2/{id}'];
-        $this->assertEquals('entity2Resource.myAlias.element.update', $entityUpdateRoute->action['as']);
+        $this->assertEquals('entity2Resource.element.update', $entityUpdateRoute->action['as']);
 
         $this->assertArrayHasKey('entity2/{id}', $PUTRoutes);
         $entityCreateRoute = $PUTRoutes['entity2/{id}'];
-        $this->assertEquals('entity2Resource.myAlias.element.create', $entityCreateRoute->action['as']);
+        $this->assertEquals('entity2Resource.element.create', $entityCreateRoute->action['as']);
 
 
         $this->assertArrayHasKey('entity3', $GETRoutes);
         $entityListRoute = $GETRoutes['entity3'];
         $this->assertEquals('MyEntityController@list', $entityListRoute->action['controller']);
-        $this->assertEquals('entity3Resource.myAlias3.list', $entityListRoute->action['as']);
+        $this->assertEquals('entity3Resource.list', $entityListRoute->action['as']);
 
         $this->assertArrayHasKey('entity3/{id}', $GETRoutes);
         $entityElementRoute = $GETRoutes['entity3/{id}'];
-        $this->assertEquals('entity3Resource.myAlias3.element.show', $entityElementRoute->action['as']);
+        $this->assertEquals('entity3Resource.element.show', $entityElementRoute->action['as']);
 
         $this->assertArrayHasKey('entity3/{id}', $POSTRoutes);
         $entityUpdateRoute = $POSTRoutes['entity3/{id}'];
-        $this->assertEquals('entity3Resource.myAlias3.element.update', $entityUpdateRoute->action['as']);
+        $this->assertEquals('entity3Resource.element.update', $entityUpdateRoute->action['as']);
 
         $this->assertArrayHasKey('entity3/{id}', $PUTRoutes);
         $entityCreateRoute = $PUTRoutes['entity3/{id}'];
-        $this->assertEquals('entity3Resource.myAlias3.element.create', $entityCreateRoute->action['as']);
+        $this->assertEquals('entity3Resource.element.create', $entityCreateRoute->action['as']);
 
         $this->assertArrayHasKey('entity3/{id}', $PUTRoutes);
         $entityCreateRoute = $PUTRoutes['entity3/{id}'];
-        $this->assertEquals('entity3Resource.myAlias3.element.create', $entityCreateRoute->action['as']);
+        $this->assertEquals('entity3Resource.element.create', $entityCreateRoute->action['as']);
 
         $this->assertArrayHasKey('entity3/anotherRoute', $GETRoutes);
         $entity3GetRoute = $GETRoutes['entity3/anotherRoute'];

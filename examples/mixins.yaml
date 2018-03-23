@@ -1,19 +1,21 @@
 
 +myResourceMixin(ControllerName, Alias = myResource):
-  GET / as .${Alias}.list: ${ControllerName}@list
-  /{id ~ \d+} as .${Alias}.element:
-    GET / as .show: ${ControllerName}@show
-    POST / as .update: ${ControllerName}@update
-    PUT / as .create: ${ControllerName}@create
-    DELETE / as .delete: ${ControllerName}@destroy
+  GET / as .${Alias}.list           : ${ControllerName}@list
+
+  /{id ~ \d+} as .${Alias}.element  :
+    GET / as .show                  : ${ControllerName}@show
+    POST / as .update               : ${ControllerName}@update
+    PUT / as .create                : ${ControllerName}@create
+    DELETE / as .delete             : ${ControllerName}@destroy
 
 +myResourceMixin2(ControllerName, Alias = myAlias):
-  GET / as .${Alias}.list: ${ControllerName}@list
-  /{id ~ \d+} as .${Alias}.element:
-    GET / as .show: ${ControllerName}@show
-    POST / as .update: ${ControllerName}@update
-    PUT / as .create: ${ControllerName}@create
-    DELETE / as .delete: ${ControllerName}@destroy
+  GET / as .list            : ${ControllerName}@list
+
+  /{id ~ \d+} as .element   :
+    GET / as .show          : ${ControllerName}@show
+    POST / as .update       : ${ControllerName}@update
+    PUT / as .create        : ${ControllerName}@create
+    DELETE / as .delete     : ${ControllerName}@destroy
 
 /entity as entityResource:
   +: myResourceMixin(MyEntityController, myEntity)
@@ -26,18 +28,19 @@
   GET /anotherRoute as .another: MyEntityController@anotherAction
 
 +mySimpleMixin:
-  GET /: SimpleController@index
-  GET /info: SimpleController@info
-  POST /submit: SimpleController@submit
+  GET /         : SimpleController@index
+  GET /info     : SimpleController@info
+  POST /submit  : SimpleController@submit
 
 +mySimpleMixin2:
-  GET /contact: SimpleController@contact
+  GET /contact  : SimpleController@contact
 
 /my:
   +:
     - mySimpleMixin()
     - mySimpleMixin2()
-  GET /feedback: SimpleController@feedback
+
+  GET /feedback : SimpleController@feedback
 
 /my2:
   - use-mixins.yaml

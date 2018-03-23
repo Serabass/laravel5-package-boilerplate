@@ -3,7 +3,7 @@
   PUT / as .create uses auth:api  : ${Controller}@create
 
   /{id ~numeric}:
-    GET / as .item      : ${Controller}@item
+    GET / as .item        : ${Controller}@item
 
     / uses auth:api:
       POST / as .update   : ${Controller}@update

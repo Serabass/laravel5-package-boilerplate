@@ -13,15 +13,15 @@ PUT /saveAll uses auth: ArticleController@save
 
 /api uses api:
   GET /entity: EntityController@list
-  GET /entity/{id ~ \d+}: EntityController@get
-  POST /entity/{id ~ \d+}: EntityController@save
+  GET /entity/{id ~ \d+}  : EntityController@get
+  POST /entity/{id ~ \d+} : EntityController@save
 
   GET /entity/{id}/getComments:
     action: EntityController@getComments
 
   /admin:
-    GET /index: AdminController@index
-    GET /entity/{id ~ \d+}: AdminController@entity
+    GET /index              : AdminController@index
+    GET /entity/{id ~ \d+}  : AdminController@entity
     /subroute3:
       GET /entity/{id ~ \d+}: AdminController@entity
       GET /data/{alias ~ .+}: AdminController@entity

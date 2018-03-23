@@ -3,8 +3,8 @@ GET /index2 as .subindex2: SubController@index2
 
 /sub2 as .sub2:
   POST /index as .subsubindex uses api:
-    controller: Sub\SubController
-    action: index
+    controller  : Sub\SubController
+    action      : index
 
   /:
     - sub2
