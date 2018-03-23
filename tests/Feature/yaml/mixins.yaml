@@ -40,4 +40,4 @@
   GET /feedback: SimpleController@feedback
 
 /my2:
-  - use-mixins
+  - use-mixins.yaml
