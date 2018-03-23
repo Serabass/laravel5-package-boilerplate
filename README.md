@@ -133,7 +133,7 @@ Yaroute has few prefedined aliases:
 
 # Generating YAML
 
-Also you can generate new YAML document (based on registered routes in app)
+You can also generate new YAML document (based on registered routes in app)
  with `$ php artisan yaroute:generate`.
 It will be printed to stdout so you can pipe it to needed file, e.g.:
 
