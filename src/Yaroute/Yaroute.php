@@ -75,7 +75,11 @@ class Yaroute
     public $yamlPath;
 
     public $mixins = [];
-    public $regexes = [];
+
+    public $regexes = [
+        'numeric' => '\d+',
+        'alias' => '[\w-]+',
+    ];
 
     /**
      * @param         $file
@@ -84,6 +88,7 @@ class Yaroute
      *
      * @return Yaroute
      * @throws IncorrectDataException
+     * @throws RegExpAliasAlreadySetException
      */
     public static function registerFile($file, Yaroute $yaml = null)
     {
@@ -323,6 +328,7 @@ class Yaroute
      * @param $value
      *
      * @throws IncorrectDataException
+     * @throws RegExpAliasAlreadySetException
      */
     private function useMixin($value)
     {
@@ -350,6 +356,7 @@ class Yaroute
      *
      * @return bool
      * @throws IncorrectDataException
+     * @throws RegExpAliasAlreadySetException
      */
     public function register($data): bool
     {
@@ -368,6 +375,9 @@ class Yaroute
             if ($regexMatches = $this->parseRegexPresetString($key, $value)) {
                 $name = $regexMatches['name'];
                 $regex = $regexMatches['regex'];
+                if (isset($this->regexes[$name])) {
+                    throw new RegExpAliasAlreadySetException();
+                }
                 $this->regexes[$name] = $regex;
             }
 
@@ -471,6 +481,7 @@ class Yaroute
      * @param $file
      *
      * @throws IncorrectDataException
+     * @throws RegExpAliasAlreadySetException
      */
     public function registerFileImpl($file)
     {
