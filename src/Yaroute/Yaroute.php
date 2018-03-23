@@ -58,7 +58,7 @@ class Yaroute
      */
     const PARAM_REGEX =
         '/\{(?P<param>[\w?]+)' .
-        '(?:\s+~\s+(?P<regex>.+?))?\}/sim';
+        '(?:\s+~(?P<regex>\s*.+?))?\}/sim';
 
     /**
      * Regular expression to parse uri parameter string
@@ -70,9 +70,12 @@ class Yaroute
      */
     const MIXIN_REGEX = '/^\+(?P<name>\w+)(?:\((?P<params>.+?)\))?$/m';
 
+    const REGEX_PRESET_REGEX = '/^~(?P<name>[\w-]+)$/sim';
+
     public $yamlPath;
 
     public $mixins = [];
+    public $regexes = [];
 
     /**
      * @param         $file
@@ -164,6 +167,21 @@ class Yaroute
         return $result;
     }
 
+
+    public function parseRegexPresetString($string, $value)
+    {
+        if (!preg_match(self::REGEX_PRESET_REGEX, $string, $matches)) {
+            return null;
+        }
+
+        $name = $matches['name'];
+
+        return [
+            'name' => $name,
+            'regex' => $value
+        ];
+    }
+
     /**
      * @param $string
      * @param $value
@@ -245,9 +263,15 @@ class Yaroute
             $param = $matches['param'];
             $paramNoQ = str_replace('?', '', $param);
 
+
+
             if (isset($matches['regex'])) {
                 $regex = $matches['regex'];
-                $wheres[$paramNoQ] = $regex;
+                if (preg_match('/^\s/', $regex)) {
+                    $wheres[$paramNoQ] = $regex;
+                } else {
+                    $wheres[$paramNoQ] = $this->regexes[$regex];
+                }
             }
 
             return '{' . $param . '}';
@@ -341,13 +365,19 @@ class Yaroute
             }
         }
 
-        foreach ($data as $url => $value) {
+        foreach ($data as $key => $value) {
 
-            if ($mixin = $this->parseMixinString($url, $value)) {
+            if ($regexMatches = $this->parseRegexPresetString($key, $value)) {
+                $name = $regexMatches['name'];
+                $regex = $regexMatches['regex'];
+                $this->regexes[$name] = $regex;
+            }
+
+            if ($mixin = $this->parseMixinString($key, $value)) {
                 $this->mixins[$mixin['name']] = $mixin;
             }
 
-            if ($groupMatches = $this->parseGroupString($url)) {
+            if ($groupMatches = $this->parseGroupString($key)) {
                 $options = [];
                 if (isset($groupMatches['middleware'])) {
                     $options['middleware'] = $groupMatches['middleware'];
@@ -362,12 +392,12 @@ class Yaroute
                     $options['as'] = $groupMatches['as'];
                 }
 
-                Route::group($options, function () use ($value, $url) {
+                Route::group($options, function () use ($value, $key) {
                     $this->register($value);
                 });
             }
 
-            if ($url === '+') {
+            if ($key === '+') {
                 if (is_string($value)) {
                     $this->useMixin($value);
                 } elseif (is_array($value) && !$this->isAssoc($value)) {
@@ -377,7 +407,7 @@ class Yaroute
                 }
             }
 
-            if ($urlMatches = $this->parseRouteString($url)) {
+            if ($urlMatches = $this->parseRouteString($key)) {
                 $wheres = $this->getWheres($urlMatches['path']);
 
                 $options['path'] = $wheres['url'];
