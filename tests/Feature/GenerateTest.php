@@ -14,9 +14,7 @@ class GenerateTest extends PackageTestCase
 
         Route::group(['prefix' => 'api', 'as' => 'api.'], function () {
             Route::get('/entity', 'Api\\EntityController@index')->name('entity.list');
-
             Route::post('/entity', 'Api\\EntityController@create')->name('entity.save');
-
             Route::get('/entity/{id}', 'Api\\EntityController@get')
                 ->name('entity.get')
                 ->where('id', '\d+');
