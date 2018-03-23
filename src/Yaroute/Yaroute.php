@@ -529,7 +529,7 @@ class Yaroute
             foreach ($data as $url => $options) {
                 if (!isset($options->action['controller'])) {
                     if (isset($options->action['uses'])) {
-                        echo "Warning: Please do not use lambda functions in routes! Replace all ::CALLABLE:: tags to Controller@action notation";
+                        echo "Warning: Please do not use lambda functions in routes! Replace all ::CALLABLE:: tags to Controller@action notation\n";
                         $controller = "::CALLABLE::";
                     }
                 } else {
