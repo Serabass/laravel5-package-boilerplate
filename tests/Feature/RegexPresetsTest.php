@@ -25,6 +25,10 @@ class RegexPresetsTest extends PackageTestCase
         $this->assertArrayHasKey('post/{alias}', $GETRoutes);
         $this->assertEquals('PostController@show', $GETRoutes['post/{alias}']->action['controller']);
         $this->assertEquals(['alias' => '[\w-]+'], $GETRoutes['post/{alias}']->wheres);
+
+        $this->assertArrayHasKey('redirect/{url}', $GETRoutes);
+        $this->assertEquals('RedirectController@go', $GETRoutes['redirect/{url}']->action['controller']);
+        $this->assertEquals(['url' => '.+'], $GETRoutes['redirect/{url}']->wheres);
     }
 
     public function testAlreadySet()
