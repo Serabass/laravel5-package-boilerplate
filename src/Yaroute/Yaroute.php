@@ -1,6 +1,7 @@
 <?php
 /**
  * @link Specification of YAML 1.2 http://www.yaml.org/spec/1.2/spec.html
+ * @link Route caching in Laravel core https://github.com/laravel/framework/blob/5.6/src/Illuminate/Foundation/Support/Providers/RouteServiceProvider.php#L30-L39
  */
 
 namespace Serabass\Yaroute;
