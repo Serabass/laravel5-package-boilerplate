@@ -24,7 +24,7 @@ class GenerateTest extends PackageTestCase
             $groupData = [
                 'prefix' => '/article/{alias}',
                 'where' => [
-                    'alias' => '\w+'
+                    'alias' => '[\w-]+'
                 ],
                 'as' => 'article.'
             ];
@@ -47,14 +47,14 @@ class GenerateTest extends PackageTestCase
             'GET / as home: HomeController@index',
             'GET /api/entity as api.entity.list: Api\\EntityController@index',
             'GET /api/entity/{id ~ \d+} as api.entity.get: Api\\EntityController@get',
-            'GET /api/article/{alias ~ \w+}/index as api.article.item: ArticleController@index',
+            'GET /api/article/{alias ~ [\w-]+}/index as api.article.item: ArticleController@index',
             'GET /api/sandbox/{param} as api.sandbox: SandboxController@index',
             'POST /api/entity as api.entity.save: Api\\EntityController@create',
-            'DELETE /api/article/{alias ~ \w+} as api.article.delete: ArticleController@destroy',
+            'DELETE /api/article/{alias ~ [\w-]+} as api.article.delete: ArticleController@destroy',
             'HEAD / as home: HomeController@index',
             'HEAD /api/entity as api.entity.list: Api\\EntityController@index',
             'HEAD /api/entity/{id ~ \d+} as api.entity.get: Api\\EntityController@get',
-            'HEAD /api/article/{alias ~ \w+}/index as api.article.item: ArticleController@index',
+            'HEAD /api/article/{alias ~ [\w-]+}/index as api.article.item: ArticleController@index',
             'HEAD /api/sandbox/{param} as api.sandbox: SandboxController@index',
         ];
         $joined = join("\n", $expected);
