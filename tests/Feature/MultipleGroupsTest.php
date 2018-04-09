@@ -10,7 +10,7 @@ class MultipleGroupsTest extends PackageTestCase
 {
     public function testMultipleGroups()
     {
-        $this->yaml->registerFile(__DIR__ . '/../../examples/multiple-groups.yaml');
+        $this->yaml->registerFile(__DIR__.'/../../examples/multiple-groups.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');
@@ -27,6 +27,5 @@ class MultipleGroupsTest extends PackageTestCase
 
         $this->assertArrayHasKey('post/{id}', $GETRoutes);
         $this->assertEquals('post.item', $GETRoutes['post/{id}']->action['as']);
-
     }
 }

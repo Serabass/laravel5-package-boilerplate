@@ -81,47 +81,45 @@ class YamlTest extends PackageTestCase
     public function testParseGroupString()
     {
         $this->assertEquals($this->yaml->parseGroupString('/'), [
-            'prefix' => '/'
+            'prefix' => '/',
         ]);
 
         $this->assertEquals($this->yaml->parseGroupString('/ as root'), [
             'prefix' => '/',
-            'as' => 'root'
+            'as'     => 'root',
         ]);
 
         $this->assertEquals($this->yaml->parseGroupString('/ uses auth:api'),
             [
-                'prefix' => '/',
+                'prefix'       => '/',
                 'middleware'   => ['auth:api'],
-                'as' => ''
+                'as'           => '',
             ]);
 
         $this->assertEquals($this->yaml->parseGroupString('/{id} as name uses auth:api'),
             [
-                'prefix' => '/{id}',
+                'prefix'       => '/{id}',
                 'middleware'   => ['auth:api'],
-                'as'   => 'name',
+                'as'           => 'name',
             ]);
-
     }
 
     public function testParseActionString()
     {
         $this->assertEquals($this->yaml->parseActionString('UserController@myAction'), [
             'controller' => 'UserController',
-            'action'     => 'myAction'
+            'action'     => 'myAction',
         ]);
 
         $this->assertEquals($this->yaml->parseActionString('UserController@myAction'), [
             'controller' => 'UserController',
-            'action'     => 'myAction'
+            'action'     => 'myAction',
         ]);
-
     }
 
     public function testSimpleRoutes()
     {
-        $this->yaml->registerFile(__DIR__ . '/../../examples/routes.yaml');
+        $this->yaml->registerFile(__DIR__.'/../../examples/routes.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');
@@ -145,7 +143,6 @@ class YamlTest extends PackageTestCase
         $this->assertEquals('UserController@checkToken3', $GETRoutes['checkToken3']->action['controller']);
         $this->assertEquals('checkToken3', $GETRoutes['checkToken3']->action['as']);
         $this->assertEquals(['api,guest'], $GETRoutes['checkToken3']->action['middleware']);
-
 
         $POSTRoutes = $routes->get('POST');
         $this->assertNotNull($POSTRoutes);
@@ -184,7 +181,6 @@ class YamlTest extends PackageTestCase
         $this->assertArrayHasKey('id', $wheres);
         $this->assertEquals('\d+', $wheres['id']);
 
-
         $this->assertArrayHasKey('api/admin123/{section}/index', $GETRoutes);
         $this->assertEquals(['GET', 'HEAD'], $GETRoutes['api/admin123/{section}/index']->methods);
         $this->assertEquals(['api'], $GETRoutes['api/admin123/{section}/index']->action['middleware']);
@@ -209,7 +205,6 @@ class YamlTest extends PackageTestCase
         $this->assertArrayHasKey('included-route/index/{id}', $GETRoutes);
         $this->assertEquals(['GET', 'HEAD'], $GETRoutes['included-route/index/{id}']->methods);
         $this->assertEquals('parent.myIndex', $GETRoutes['included-route/index/{id}']->action['as']);
-
     }
 
     public function testRegisterNull()
@@ -220,7 +215,7 @@ class YamlTest extends PackageTestCase
     public function testRegisterMalformedData()
     {
         $this->assertFalse($this->yaml->register([
-            'GET /' => null
+            'GET /' => null,
         ]));
     }
 }

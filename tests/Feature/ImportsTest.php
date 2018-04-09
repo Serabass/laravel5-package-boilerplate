@@ -10,7 +10,7 @@ class ImportsTest extends PackageTestCase
 {
     public function testNamespaces()
     {
-        $this->yaml->registerFile(__DIR__ . '/../../examples/root-imports.yaml');
+        $this->yaml->registerFile(__DIR__.'/../../examples/root-imports.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');
@@ -27,6 +27,5 @@ class ImportsTest extends PackageTestCase
 
         $this->assertEquals('post.good.item', $newRoute->action['as']);
         $this->assertEquals('GoodController@item', $newRoute->action['controller']);
-
     }
 }

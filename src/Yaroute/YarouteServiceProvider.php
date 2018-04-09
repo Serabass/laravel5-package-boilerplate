@@ -6,24 +6,24 @@ use Illuminate\Support\ServiceProvider;
 use Serabass\Yaroute\Commands\GenerateCommand;
 
 /**
- * A Laravel 5.5 package boilerplate
+ * A Laravel 5.5 package boilerplate.
  *
  * @author: Rémi Collin (remi@code16.fr)
  */
-class YarouteServiceProvider extends ServiceProvider {
-
+class YarouteServiceProvider extends ServiceProvider
+{
     /**
      * This will be used to register config & view in
      * your package namespace.
      *
      * --> Replace with your package name <--
      *
-     * @var  string
+     * @var string
      */
     protected $packageName = 'yaroute';
 
     /**
-     * A list of artisan commands for your package
+     * A list of artisan commands for your package.
      *
      * @var array
      */
@@ -82,7 +82,5 @@ class YarouteServiceProvider extends ServiceProvider {
         $this->mergeConfigFrom(
             __DIR__.'/../config/config.php', $this->packageName
         );
-
     }
-
 }
