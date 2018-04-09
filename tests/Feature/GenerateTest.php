@@ -21,10 +21,10 @@ class GenerateTest extends PackageTestCase
 
             $groupData = [
                 'prefix' => '/article/{alias}',
-                'where' => [
-                    'alias' => '[\w-]+'
+                'where'  => [
+                    'alias' => '[\w-]+',
                 ],
-                'as' => 'article.'
+                'as' => 'article.',
             ];
 
             Route::group($groupData, function () {
@@ -50,13 +50,13 @@ class GenerateTest extends PackageTestCase
             'POST /api/entity as api.entity.save: Api\\EntityController@create',
             'DELETE /api/article/{alias ~ [\w-]+} as api.article.delete: ArticleController@destroy',
         ];
-        $joined = join("\n", $expected);
+        $joined = implode("\n", $expected);
         $this->assertEquals($joined, $yaml);
     }
 
-    public function testGenerateWithCallables() {
-        Route::get('/', function() {
-
+    public function testGenerateWithCallables()
+    {
+        Route::get('/', function () {
         })->name('home');
 
         $cmd = new GenerateCommand();

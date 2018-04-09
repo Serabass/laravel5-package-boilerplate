@@ -10,7 +10,7 @@ class MixinTest extends PackageTestCase
 {
     public function testMixin()
     {
-        $this->yaml->registerFile(__DIR__ . '/../../examples/mixins.yaml');
+        $this->yaml->registerFile(__DIR__.'/../../examples/mixins.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');
@@ -26,7 +26,6 @@ class MixinTest extends PackageTestCase
         $entityListRoute = $GETRoutes['entity'];
         $this->assertEquals('entityResource.myEntity.list', $entityListRoute->action['as']);
 
-
         $this->assertArrayHasKey('entity/{id}', $GETRoutes);
         $entityElementRoute = $GETRoutes['entity/{id}'];
         $this->assertEquals('entityResource.myEntity.element.show', $entityElementRoute->action['as']);
@@ -38,7 +37,6 @@ class MixinTest extends PackageTestCase
         $this->assertArrayHasKey('entity/{id}', $PUTRoutes);
         $entityCreateRoute = $PUTRoutes['entity/{id}'];
         $this->assertEquals('entityResource.myEntity.element.create', $entityCreateRoute->action['as']);
-
 
         $this->assertArrayHasKey('entity2', $GETRoutes);
         $entityListRoute = $GETRoutes['entity2'];
@@ -56,7 +54,6 @@ class MixinTest extends PackageTestCase
         $this->assertArrayHasKey('entity2/{id}', $PUTRoutes);
         $entityCreateRoute = $PUTRoutes['entity2/{id}'];
         $this->assertEquals('entity2Resource.element.create', $entityCreateRoute->action['as']);
-
 
         $this->assertArrayHasKey('entity3', $GETRoutes);
         $entityListRoute = $GETRoutes['entity3'];
@@ -86,7 +83,7 @@ class MixinTest extends PackageTestCase
 
     public function testSimpleMixins()
     {
-        $this->yaml->registerFile(__DIR__ . '/../../examples/mixins.yaml');
+        $this->yaml->registerFile(__DIR__.'/../../examples/mixins.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');
@@ -118,7 +115,7 @@ class MixinTest extends PackageTestCase
 
     public function testSimpleMixinsWithImports()
     {
-        $this->yaml->registerFile(__DIR__ . '/../../examples/mixins.yaml');
+        $this->yaml->registerFile(__DIR__.'/../../examples/mixins.yaml');
         $routes = Route::getRoutes();
 
         $this->assertTrue($routes instanceof RouteCollection);
@@ -147,6 +144,5 @@ class MixinTest extends PackageTestCase
         $this->assertArrayHasKey('my2/feedback', $GETRoutes);
         $myRoute = $GETRoutes['my2/feedback'];
         $this->assertEquals('SimpleController@feedback', $myRoute->action['controller']);
-
     }
 }

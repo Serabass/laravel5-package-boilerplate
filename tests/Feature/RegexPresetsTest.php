@@ -11,7 +11,7 @@ class RegexPresetsTest extends PackageTestCase
 {
     public function testRegexPresets()
     {
-        $this->yaml->registerFile(__DIR__ . '/../../examples/regex-presets.yaml');
+        $this->yaml->registerFile(__DIR__.'/../../examples/regex-presets.yaml');
 
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
@@ -34,7 +34,7 @@ class RegexPresetsTest extends PackageTestCase
     public function testAlreadySet()
     {
         $this->assertException(function () {
-            $this->yaml->registerFile(__DIR__ . '/yaml/regex-presets-existing.yaml');
+            $this->yaml->registerFile(__DIR__.'/yaml/regex-presets-existing.yaml');
         }, RegExpAliasAlreadySetException::class);
     }
 }

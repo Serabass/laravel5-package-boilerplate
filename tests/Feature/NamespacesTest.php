@@ -10,7 +10,7 @@ class NamespacesTest extends PackageTestCase
 {
     public function testNamespaces()
     {
-        $this->yaml->registerFile(__DIR__ . '/../../examples/namespaces.yaml');
+        $this->yaml->registerFile(__DIR__.'/../../examples/namespaces.yaml');
         $routes = Route::getRoutes();
         $this->assertTrue($routes instanceof RouteCollection);
         $GETRoutes = $routes->get('GET');
@@ -22,6 +22,5 @@ class NamespacesTest extends PackageTestCase
         $this->assertEquals('api-group.new', $newRoute->action['as']);
         $this->assertEquals('Api', $newRoute->action['namespace']);
         $this->assertEquals('Api\MyController@newEntry', $newRoute->action['controller']);
-
     }
 }
