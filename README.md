@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Serabass/yaroute.svg?branch=master)](https://travis-ci.org/Serabass/yaroute)
 [![StyleCI](https://styleci.io/repos/126143023/shield?branch=master)](https://styleci.io/repos/126143023)
 
 **Yaroute** is a simple route-organizer that uses YAML to register routes in Laravel.
