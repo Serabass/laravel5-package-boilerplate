@@ -23,13 +23,13 @@ class GenerateCommand extends Command
 
     /**
      * Execute the console command.
-     *
      */
     public function handle()
     {
         $yaml = new Yaroute();
         $generateYamlFromRoutes = $yaml->generateYamlFromRoutes();
         echo $generateYamlFromRoutes;
+
         return $generateYamlFromRoutes;
     }
 }

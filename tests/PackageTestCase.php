@@ -2,13 +2,12 @@
 
 namespace Serabass\Yaroute\Tests;
 
+use Orchestra\Testbench\TestCase;
 use Serabass\Yaroute\Yaroute;
 use Serabass\Yaroute\YarouteServiceProvider;
-use Orchestra\Testbench\TestCase;
 
 abstract class PackageTestCase extends TestCase
 {
-
     /**
      * @var Yaroute
      */
@@ -32,6 +31,7 @@ abstract class PackageTestCase extends TestCase
         if (!class_exists($expectedException) && !interface_exists($expectedException)) {
             $this->fail(sprintf('An exception of type "%s" does not exist.', $expectedException));
         }
+
         try {
             $callback();
         } catch (\Exception $e) {
@@ -52,6 +52,7 @@ abstract class PackageTestCase extends TestCase
             if ($expectedMessage !== null) {
                 $this->assertContains($expectedMessage, $message, sprintf('Failed asserting the message of thrown %s.', $class));
             }
+
             return;
         }
         $errorMessage = 'Failed asserting that exception';
@@ -61,7 +62,6 @@ abstract class PackageTestCase extends TestCase
         $errorMessage .= ' was thrown.';
         $this->fail($errorMessage);
     }
-
 
     protected function getPackageProviders($app)
     {
