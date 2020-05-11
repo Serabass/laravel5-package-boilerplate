@@ -1,24 +1,48 @@
 language: php
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 php:
   - 7.1
   - 7.2
+  - 7.3
+  - 7.4
 
 env:
-  - LARAVEL_VERSION=5.5.*
+  - ILLUMINATE_VERSION=5.1.*
+  - ILLUMINATE_VERSION=5.2.*
+  - ILLUMINATE_VERSION=5.3.*
+  - ILLUMINATE_VERSION=5.4.*
+  - ILLUMINATE_VERSION=5.5.*
+  - ILLUMINATE_VERSION=5.6.*
+  - ILLUMINATE_VERSION=5.7.*
+  - ILLUMINATE_VERSION=5.8.*
+  - ILLUMINATE_VERSION=6.*
+  - ILLUMINATE_VERSION=7.*
 
 matrix:
-  fast_finish: true
-  exclude:    
-    - php: 7.0      
-      env: LARAVEL_VERSION=5.6.*
+  exclude:
+    # Laravel 6 does not support PHP 7.1
+    - php: 7.1
+      env: ILLUMINATE_VERSION=6.*
+    # Laravel 7 does not support PHP 7.1
+    - php: 7.1
+      env: ILLUMINATE_VERSION=7.*
 
-before_script:
-  - travis_retry composer self-update
-  - travis_retry composer install --prefer-source --no-interaction         
-  - if [ "$LARAVEL_VERSION" != "" ]; then composer require --dev "laravel/laravel:${LARAVEL_VERSION}" --no-update; fi;  
-  - composer update
+sudo: false
+
+before_install:
+  - composer require illuminate/contracts:"${ILLUMINATE_VERSION}" illuminate/http:"${ILLUMINATE_VERSION}" illuminate/support:"${ILLUMINATE_VERSION}" illuminate/validation:"${ILLUMINATE_VERSION}" --no-update
+  - composer require illuminate/filesystem:"${ILLUMINATE_VERSION}" illuminate/translation:"${ILLUMINATE_VERSION}" --dev --no-update
+
+install:
+  - composer install --no-interaction --no-progress --no-suggest --prefer-dist
 
 script:
-  - phpunit
-  
+  - ./vendor/bin/phpunit --coverage-clover=coverage.clover --verbose
+
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
